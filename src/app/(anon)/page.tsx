@@ -53,20 +53,6 @@ const seasonalSpecials = [
   },
 ];
 
-interface Salad {
-  id: number;
-  name: string;
-  description: string;
-  price: string;
-  imageUrl: string;
-}
-interface SpecialSalad {
-  id: number;
-  name: string;
-  description: string;
-  imageUrl: string;
-}
-
 // --- 스타일 컴포넌트 (페이지 전용) ---
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
