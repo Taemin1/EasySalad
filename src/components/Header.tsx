@@ -1,84 +1,217 @@
-// components/Header.tsx
-"use client"; // 상호작용이 있으므로 클라이언트 컴포넌트
+"use client";
 
-import React from "react";
-import styled from "styled-components";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import styled from "@emotion/styled";
+import { motion, AnimatePresence } from "framer-motion";
+import { theme } from "@/styles/theme";
 
-// --- 스타일 컴포넌트 ---
-const HeaderContainer = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 3rem;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  position: sticky;
+const HeaderContainer = styled(motion.header)`
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-
-  @media (max-width: 768px) {
-    padding: 1rem 1.5rem;
-  }
-`;
-
-const Logo = styled.h1`
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #4caf50;
-  cursor: pointer;
+  background-color: var(--header-bg, transparent);
+  backdrop-filter: var(--header-backdrop, none);
+  box-shadow: var(--header-shadow, none);
+  transition: all ${theme.transitions.normal};
 `;
 
 const Nav = styled.nav`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
   display: flex;
-  gap: 2rem;
+  justify-content: space-between;
   align-items: center;
+`;
 
-  a {
-    text-decoration: none;
-    color: #555;
-    font-weight: 500;
-    transition: color 0.3s ease;
+const Logo = styled(Link)`
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary} 0%,
+    ${theme.colors.secondary} 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+`;
 
-    &:hover {
-      color: #4caf50;
+const NavLinks = styled.div`
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  font-size: 1.5rem;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
+
+const NavLink = styled(Link)`
+  font-weight: 500;
+  color: ${theme.colors.text.primary};
+  transition: color ${theme.transitions.fast};
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: ${theme.colors.primary};
+    transform: scaleX(0);
+    transition: transform ${theme.transitions.fast};
+  }
+
+  &:hover {
+    color: ${theme.colors.primary};
+
+    &::after {
+      transform: scaleX(1);
     }
   }
 `;
 
-const CTAButton = styled.button`
-  background-color: #4caf50;
-  color: white;
-  padding: 0.7rem 1.5rem;
-  border: none;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
+const MenuButton = styled.button`
+  display: none;
+  width: 30px;
+  height: 30px;
+  flex-direction: column;
+  justify-content: space-around;
 
-  &:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    display: flex;
+  }
+
+  span {
+    width: 100%;
+    height: 3px;
+    background-color: ${theme.colors.text.primary};
+    transition: all ${theme.transitions.fast};
   }
 `;
 
-const Header = () => {
+const MobileMenu = styled(motion.div)`
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  background-color: ${theme.colors.surface};
+  box-shadow: ${theme.shadows.md};
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const MobileNavLink = styled(Link)`
+  font-weight: 500;
+  color: ${theme.colors.text.primary};
+  padding: 10px;
+  transition: all ${theme.transitions.fast};
+
+  &:hover {
+    color: ${theme.colors.primary};
+    background-color: ${theme.colors.background};
+    border-radius: 8px;
+  }
+`;
+
+export default function Header() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 50;
+      setScrolled(isScrolled);
+
+      // CSS 변수를 사용하여 스타일 업데이트
+      if (isScrolled) {
+        document.documentElement.style.setProperty(
+          "--header-bg",
+          "rgba(255, 255, 255, 0.95)"
+        );
+        document.documentElement.style.setProperty(
+          "--header-backdrop",
+          "blur(10px)"
+        );
+        document.documentElement.style.setProperty(
+          "--header-shadow",
+          theme.shadows.sm
+        );
+      } else {
+        document.documentElement.style.setProperty(
+          "--header-bg",
+          "transparent"
+        );
+        document.documentElement.style.setProperty("--header-backdrop", "none");
+        document.documentElement.style.setProperty("--header-shadow", "none");
+      }
+    };
+
+    handleScroll(); // 초기값 설정
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navItems = [
+    { href: "/", label: "홈" },
+    { href: "/menu", label: "메뉴" },
+    { href: "/about", label: "소개" },
+    { href: "/contact", label: "문의" },
+  ];
+
   return (
-    <HeaderContainer>
-      <Link href="/">
-        <Logo>FreshSalad</Logo>
-      </Link>
+    <HeaderContainer
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Nav>
-        <Link href="/#menu">메뉴</Link>
-        <Link href="/#special">스페셜</Link>
-        <Link href="/delivery">배송안내</Link>
-        <CTAButton>주문하기</CTAButton>
+        <Logo href="/">EasySalad</Logo>
+
+        <NavLinks>
+          {navItems.map((item) => (
+            <NavLink key={item.href} href={item.href}>
+              {item.label}
+            </NavLink>
+          ))}
+        </NavLinks>
+
+        <MenuButton onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <span />
+          <span />
+          <span />
+        </MenuButton>
       </Nav>
+
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <MobileMenu
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+          >
+            {navItems.map((item) => (
+              <MobileNavLink
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item.label}
+              </MobileNavLink>
+            ))}
+          </MobileMenu>
+        )}
+      </AnimatePresence>
     </HeaderContainer>
   );
-};
-
-export default Header;
+}

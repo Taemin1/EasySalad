@@ -1,0 +1,310 @@
+import { MenuCategory } from "@/types/menu";
+
+export const menuData: MenuCategory[] = [
+  {
+    id: "sandwiches",
+    name: "샌드위치",
+    items: [
+      {
+        id: "s1",
+        name: "불고기",
+        category: "sandwiches",
+        description: "달콤한 불고기와 신선한 야채의 조화",
+      },
+      {
+        id: "s2",
+        name: "치킨바질",
+        category: "sandwiches",
+        description: "바질 향이 가득한 치킨 샌드위치",
+      },
+      {
+        id: "s3",
+        name: "리코타 단호박",
+        category: "sandwiches",
+        description: "부드러운 리코타 치즈와 달콤한 단호박",
+      },
+      {
+        id: "s4",
+        name: "통새우",
+        category: "sandwiches",
+        description: "탱글탱글한 통새우가 가득",
+      },
+      {
+        id: "s5",
+        name: "에그양배추",
+        category: "sandwiches",
+        description: "고소한 계란과 아삭한 양배추",
+      },
+      {
+        id: "s6",
+        name: "클럽",
+        category: "sandwiches",
+        description: "클래식한 클럽 샌드위치",
+      },
+      {
+        id: "s7",
+        name: "땅콩 딸기잼",
+        category: "sandwiches",
+        description: "고소한 땅콩버터와 달콤한 딸기잼",
+      },
+      {
+        id: "s8",
+        name: "모닝빵 에그",
+        category: "sandwiches",
+        description: "부드러운 모닝빵과 계란",
+      },
+      {
+        id: "s9",
+        name: "크래미 유부초밥",
+        category: "sandwiches",
+        description: "크래미와 유부의 특별한 조합",
+      },
+      {
+        id: "s10",
+        name: "불고기 유부초밥",
+        category: "sandwiches",
+        description: "불고기를 넣은 특제 유부초밥",
+      },
+      {
+        id: "s11",
+        name: "베이첼",
+        category: "sandwiches",
+        description: "베이글 샌드위치",
+      },
+      {
+        id: "s12",
+        name: "대만풍",
+        category: "sandwiches",
+        description: "대만식 특제 샌드위치",
+      },
+      {
+        id: "s13",
+        name: "크로와상 소세지",
+        category: "sandwiches",
+        description: "바삭한 크로와상과 소세지",
+      },
+      {
+        id: "s14",
+        name: "월남쌈",
+        category: "sandwiches",
+        description: "베트남식 월남쌈 샌드위치",
+      },
+      {
+        id: "s15",
+        name: "파니니",
+        category: "sandwiches",
+        description: "구운 파니니 샌드위치",
+      },
+    ],
+  },
+  {
+    id: "salads",
+    name: "샐러드",
+    items: [
+      {
+        id: "sa1",
+        name: "모짜렐라 치즈",
+        category: "salads",
+        description: "신선한 모짜렐라 치즈 샐러드",
+      },
+      {
+        id: "sa2",
+        name: "지중해풍",
+        category: "salads",
+        description: "올리브와 페타치즈의 지중해 샐러드",
+      },
+      {
+        id: "sa3",
+        name: "가라아게",
+        category: "salads",
+        description: "바삭한 가라아게 치킨 샐러드",
+      },
+      {
+        id: "sa4",
+        name: "닭가슴",
+        category: "salads",
+        description: "담백한 닭가슴살 샐러드",
+      },
+      {
+        id: "sa5",
+        name: "리코타",
+        category: "salads",
+        description: "부드러운 리코타 치즈 샐러드",
+      },
+      {
+        id: "sa6",
+        name: "불고기",
+        category: "salads",
+        description: "달콤한 불고기 샐러드",
+      },
+      {
+        id: "sa7",
+        name: "훈제오리",
+        category: "salads",
+        description: "고소한 훈제오리 샐러드",
+      },
+      {
+        id: "sa8",
+        name: "그릴두부",
+        category: "salads",
+        description: "구운 두부 샐러드",
+      },
+      {
+        id: "sa9",
+        name: "당근 라페",
+        category: "salads",
+        description: "상큼한 당근 라페 샐러드",
+      },
+      {
+        id: "sa10",
+        name: "모짜렐라",
+        category: "salads",
+        description: "모짜렐라 치즈 샐러드",
+      },
+      {
+        id: "sa11",
+        name: "참치",
+        category: "salads",
+        description: "신선한 참치 샐러드",
+      },
+      {
+        id: "sa12",
+        name: "멕시칸",
+        category: "salads",
+        description: "매콤한 멕시칸 샐러드",
+      },
+      {
+        id: "sa13",
+        name: "모듬",
+        category: "salads",
+        description: "다양한 재료의 모듬 샐러드",
+      },
+    ],
+  },
+  {
+    id: "lunchbox",
+    name: "샌드위치 도시락 박스",
+    items: [
+      {
+        id: "l1",
+        name: "도시락 박스 1",
+        category: "lunchbox",
+        description: "컵과일 + 샌드위치 + 쿠키 + 팩 음료",
+      },
+      {
+        id: "l2",
+        name: "도시락 박스 2",
+        category: "lunchbox",
+        description: "컵과일 + 샌드위치 + 쿠키 + 팩 음료",
+      },
+      {
+        id: "l3",
+        name: "2칸 도시락",
+        category: "lunchbox",
+        description: "푸짐한 2칸 도시락",
+      },
+    ],
+  },
+  {
+    id: "beverages",
+    name: "음료",
+    items: [
+      {
+        id: "b1",
+        name: "아이스 아메리카노",
+        category: "beverages",
+        description: "시원한 아이스 아메리카노 (캔 포장)",
+      },
+      {
+        id: "b2",
+        name: "아이스 라떼",
+        category: "beverages",
+        description: "부드러운 아이스 라떼 (캔 포장)",
+      },
+      {
+        id: "b3",
+        name: "디톡스주스",
+        category: "beverages",
+        description: "건강한 디톡스주스 (400ml)",
+      },
+      {
+        id: "b4",
+        name: "오렌지 착즙주스",
+        category: "beverages",
+        description: "신선한 오렌지 착즙주스 (200ml)",
+      },
+      {
+        id: "b5",
+        name: "자몽 착즙주스",
+        category: "beverages",
+        description: "상큼한 자몽 착즙주스 (200ml)",
+      },
+      {
+        id: "b6",
+        name: "몽지 착즙주스",
+        category: "beverages",
+        description: "오렌지 + 자몽 믹스 (200ml)",
+      },
+    ],
+  },
+  {
+    id: "desserts",
+    name: "디저트",
+    items: [
+      {
+        id: "d1",
+        name: "그릭 요거트 (꿀&그래놀라)",
+        category: "desserts",
+        description: "진한 그릭 요거트와 꿀, 그래놀라",
+      },
+      {
+        id: "d2",
+        name: "베리믹스 컵",
+        category: "desserts",
+        description: "딸기, 블루베리, 라즈베리 등",
+      },
+      {
+        id: "d3",
+        name: "트로피칼 믹스 컵",
+        category: "desserts",
+        description: "망고, 파인애플, 용과 등",
+      },
+      {
+        id: "d4",
+        name: "수박 컵",
+        category: "desserts",
+        description: "시원한 수박 (여름철 한정)",
+      },
+      {
+        id: "d5",
+        name: "국내산 과일 믹스",
+        category: "desserts",
+        description: "사과, 배, 포도 등",
+      },
+    ],
+  },
+  {
+    id: "catering",
+    name: "케이터링",
+    items: [
+      {
+        id: "c1",
+        name: "박스 케이터링",
+        category: "catering",
+        description: "파티와 모임을 위한 케이터링 박스",
+      },
+      {
+        id: "c2",
+        name: "회사 조식 서비스",
+        category: "catering",
+        description: "직장인을 위한 건강한 조식 서비스",
+      },
+      {
+        id: "c3",
+        name: "벌크과일 박스",
+        category: "catering",
+        description: "대용량 과일 박스",
+      },
+    ],
+  },
+];
