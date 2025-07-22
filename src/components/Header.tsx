@@ -124,13 +124,11 @@ const MobileNavLink = styled(Link)`
 `;
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const isScrolled = window.scrollY > 50;
-      setScrolled(isScrolled);
 
       // CSS 변수를 사용하여 스타일 업데이트
       if (isScrolled) {
