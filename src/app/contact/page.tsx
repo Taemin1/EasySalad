@@ -218,11 +218,11 @@ export default function ContactPage() {
             </InfoItem>
             <InfoItem>
               <InfoIcon>📍</InfoIcon>
-              <span>서울시 강남구 테헤란로 123</span>
+              <span>서울 중구 남대문로9길 40 215호(복도 맨 끝)</span>
             </InfoItem>
             <InfoItem>
               <InfoIcon>⏰</InfoIcon>
-              <span>월-금: 08:00 - 20:00</span>
+              <span>월-금: 06:30 - 20:30</span>
             </InfoItem>
           </InfoCard>
 

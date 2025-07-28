@@ -71,7 +71,7 @@ const FeatureDescription = styled.p`
 `;
 
 const MenuPreview = styled.section`
-  padding: 80px 20px;
+  padding: 2rem 6rem;
   background-color: ${theme.colors.background};
 `;
 
