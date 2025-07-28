@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "@/styles/theme";
+import { useRouter } from "next/navigation";
 
 const HeaderContainer = styled(motion.header)`
   position: fixed;
@@ -27,17 +29,13 @@ const Nav = styled.nav`
   align-items: center;
 `;
 
-const Logo = styled(Link)`
-  font-size: 1.8rem;
-  font-weight: 800;
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.primary} 0%,
-    ${theme.colors.secondary} 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+const LogoWrapper = styled.div`
+  cursor: pointer;
+  transition: transform ${theme.transitions.fast};
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 const NavLinks = styled.div`
@@ -45,6 +43,7 @@ const NavLinks = styled.div`
   gap: 30px;
   align-items: center;
   font-size: 1.5rem;
+  gap: 4rem;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     display: none;
@@ -125,6 +124,7 @@ const MobileNavLink = styled(Link)`
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -173,7 +173,14 @@ export default function Header() {
       transition={{ duration: 0.5 }}
     >
       <Nav>
-        <Logo href="/">EasySalad</Logo>
+        <LogoWrapper onClick={() => router.push("/")}>
+          <Image
+            src="/EzySaladLogo.png"
+            alt="EzySalad Logo"
+            width={150}
+            height={50}
+          />
+        </LogoWrapper>
 
         <NavLinks>
           {navItems.map((item) => (
