@@ -125,7 +125,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          신선함이 가득한 EasySalad
+          신선함이 가득한 Ezy Salad
         </Title>
 
         <Subtitle

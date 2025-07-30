@@ -45,6 +45,34 @@ const Text = styled.p`
   margin-bottom: 20px;
 `;
 
+const HighlightText = styled.span`
+  font-weight: bold;
+  color: ${theme.colors.primary};
+`;
+
+const ExperienceList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+`;
+
+const ExperienceItem = styled.li`
+  padding: 8px 0;
+  padding-left: 20px;
+  position: relative;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: ${theme.colors.text.secondary};
+
+  &:before {
+    content: "•";
+    color: ${theme.colors.primary};
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+  }
+`;
+
 const ValueGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -79,19 +107,19 @@ const ValueDescription = styled.p`
 export default function AboutPage() {
   const values = [
     {
-      icon: "🌱",
-      title: "신선함",
-      description: "매일 새벽 공수되는 신선한 재료만을 사용합니다.",
+      icon: "🥗",
+      title: "전문성",
+      description: "2012년부터 축적된 샐러드 전문 기업의 노하우",
     },
     {
-      icon: "❤️",
-      title: "건강",
-      description: "영양 균형을 고려한 건강한 메뉴를 제공합니다.",
+      icon: "🏢",
+      title: "B2B 특화",
+      description: "기업 복지를 위한 맞춤형 케이터링 서비스",
     },
     {
-      icon: "🤝",
-      title: "신뢰",
-      description: "투명한 재료 공개와 위생적인 조리 환경을 약속합니다.",
+      icon: "🚀",
+      title: "혁신",
+      description: "지속적인 혁신과 다양한 콘텐츠 개발",
     },
   ];
 
@@ -103,7 +131,7 @@ export default function AboutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          EasySalad 소개
+          Ezy Salad 소개
         </Title>
 
         <Section
@@ -111,18 +139,19 @@ export default function AboutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <SectionTitle>우리의 이야기</SectionTitle>
+          <SectionTitle>안녕하세요. ㈜HNL 대표이사 임장호입니다.</SectionTitle>
           <Text>
-            EasySalad는 2020년, 건강한 한 끼를 쉽고 맛있게 즐길 수 있도록 하자는
-            목표로 시작되었습니다. 바쁜 현대인들에게 신선하고 영양가 높은
-            샐러드와 샌드위치를 제공하여, 건강한 식습관을 만들어가는 데 도움을
-            드리고자 합니다.
+            저희 HNL은 고객 여러분께{" "}
+            <HighlightText>건강하고 간편하며 편리한 샐러드</HighlightText>를
+            제공하기 위해 설립된 <HighlightText>샐러드 전문 기업</HighlightText>
+            입니다. 2012년 론칭한{" "}
+            <HighlightText>Ezysalad(이지샐러드)</HighlightText>는 현재 시청점을
+            운영 중이며, 단체 주문을 위한 조리 시설은 종각역 인근에 마련되어
+            있습니다.
           </Text>
           <Text>
-            우리는 단순히 음식을 판매하는 것이 아니라, 고객님들의 건강한
-            라이프스타일을 함께 만들어가는 파트너가 되고자 합니다. 매일 신선한
-            재료를 준비하고, 영양사와 함께 개발한 균형 잡힌 메뉴로 여러분의
-            건강을 책임지겠습니다.
+            그동안 고객의 다양한 니즈를 충족하고자 여러 실험적 시도를
+            진행해왔습니다.
           </Text>
         </Section>
 
@@ -131,14 +160,90 @@ export default function AboutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <SectionTitle>우리의 가치</SectionTitle>
+          <SectionTitle>주요 경험 및 실적</SectionTitle>
+          <ExperienceList>
+            <ExperienceItem>
+              <HighlightText>신세계백화점 경기점 및 인천점</HighlightText> 입점
+              운영
+            </ExperienceItem>
+            <ExperienceItem>
+              <HighlightText>샐러드 자판기</HighlightText> 시범 운영
+            </ExperienceItem>
+            <ExperienceItem>
+              2018년 상반기, <HighlightText>SK지주회사</HighlightText>에 샐러드
+              및 샌드위치 납품
+            </ExperienceItem>
+            <ExperienceItem>
+              2018년 하반기, <HighlightText>SK이노베이션</HighlightText> 및{" "}
+              <HighlightText>SK E&S</HighlightText> 사내 휴게실 관리 운영
+            </ExperienceItem>
+            <ExperienceItem>
+              2019년 초, <HighlightText>삼일회계법인</HighlightText> 사내 휴게실
+              내 샐러드 자판기 추가
+            </ExperienceItem>
+            <ExperienceItem>
+              2020년 하반기, <HighlightText>안진회계법인</HighlightText>,{" "}
+              <HighlightText>한영회계법인</HighlightText>,{" "}
+              <HighlightText>티몬</HighlightText> 등 다수 기업에 납품
+            </ExperienceItem>
+            <ExperienceItem>
+              2023~2024년 <HighlightText>용산 대통령실 행사</HighlightText> 및
+              도시락 박스 납품
+            </ExperienceItem>
+            <ExperienceItem>
+              2023년부터 현재까지 <HighlightText>젠틀몬스터</HighlightText>에
+              조식 케이터링 서비스 운영
+            </ExperienceItem>
+          </ExperienceList>
+        </Section>
+
+        <Section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <SectionTitle>새로운 도전: 이지밀 브랜드</SectionTitle>
+          <Text>
+            이와 같은 경험을 바탕으로, 앞으로는{" "}
+            <HighlightText>'이지밀' 브랜드 론칭</HighlightText>을 통해 기업의
+            사내 복지를 위한 다양한 가격대와 풍성한 구성의 식사를 제안하고자
+            합니다. 이는{" "}
+            <HighlightText>
+              기업의 아침 복지 고민을 해결하는 데 도움을 줄 것
+            </HighlightText>
+            입니다.
+          </Text>
+          <Text>
+            앞으로는 <HighlightText>B2B 샐러드 유통</HighlightText>과{" "}
+            <HighlightText>무인 판매</HighlightText>에 더욱 집중하고,{" "}
+            <HighlightText>
+              가정에서도 손쉽게 샐러드를 즐기실 수 있도록 온라인 판매망을 구축
+            </HighlightText>
+            할 예정입니다.
+          </Text>
+          <Text>
+            HNL은 앞으로도{" "}
+            <HighlightText>지속적인 혁신과 다양한 콘텐츠 개발</HighlightText>을
+            통해
+            <HighlightText>
+              대한민국 최고의 샐러드 회사로 성장하기 위해 최선을 다하겠습니다.
+            </HighlightText>
+          </Text>
+        </Section>
+
+        <Section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <SectionTitle>우리의 강점</SectionTitle>
           <ValueGrid>
             {values.map((value, index) => (
               <ValueCard
                 key={index}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
+                transition={{ delay: 1.0 + index * 0.1 }}
               >
                 <ValueIcon>{value.icon}</ValueIcon>
                 <ValueTitle>{value.title}</ValueTitle>
