@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { MenuItem } from "@/types/menu";
 import { theme } from "@/styles/theme";
+import Image from "next/image";
 
 const Card = styled(motion.div)`
   background-color: ${theme.colors.surface};
@@ -22,6 +23,7 @@ const Card = styled(motion.div)`
 const ImageContainer = styled.div`
   width: 100%;
   height: 200px;
+  position: relative;
   background: linear-gradient(
     135deg,
     ${theme.colors.primary}20 0%,
@@ -30,8 +32,20 @@ const ImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const StyledImage = styled(Image)`
+  object-fit: cover;
+  transition: transform ${theme.transitions.normal};
+
+  ${Card}:hover & {
+    transform: scale(1.05);
+  }
+`;
+
+const PlaceholderIcon = styled.div`
   font-size: 4rem;
-  position: relative;
+  opacity: 0.7;
 `;
 
 const Badge = styled.span<{ type: "new" | "popular" }>`
@@ -45,6 +59,7 @@ const Badge = styled.span<{ type: "new" | "popular" }>`
   background-color: ${(props) =>
     props.type === "new" ? theme.colors.accent : theme.colors.primary};
   color: white;
+  z-index: 2;
 `;
 
 const Content = styled.div`
@@ -95,7 +110,17 @@ export default function MenuCard({ item, index = 0 }: MenuCardProps) {
       transition={{ delay: index * 0.1 }}
     >
       <ImageContainer>
-        {getEmoji(item.category)}
+        {item.image ? (
+          <StyledImage
+            src={item.image}
+            alt={item.name}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={index < 6} // 처음 6개 이미지는 우선 로딩
+          />
+        ) : (
+          <PlaceholderIcon>{getEmoji(item.category)}</PlaceholderIcon>
+        )}
         {item.isNew && <Badge type="new">NEW</Badge>}
         {item.isPopular && <Badge type="popular">인기</Badge>}
       </ImageContainer>
