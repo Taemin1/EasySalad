@@ -131,7 +131,7 @@ export default function AboutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Ezy Salad 소개
+          ㈜HNL 소개
         </Title>
 
         <Section
@@ -202,12 +202,14 @@ export default function AboutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <SectionTitle>새로운 도전: 이지밀 브랜드</SectionTitle>
+          <SectionTitle>새로운 도전: 이지밀(Ezymil) 브랜드</SectionTitle>
           <Text>
             이와 같은 경험을 바탕으로, 앞으로는{" "}
-            <HighlightText>'이지밀' 브랜드 론칭</HighlightText>을 통해 기업의
-            사내 복지를 위한 다양한 가격대와 풍성한 구성의 식사를 제안하고자
-            합니다. 이는{" "}
+            <HighlightText>
+              &apos;이지밀(Ezymil)&apos; 브랜드 론칭
+            </HighlightText>
+            을 통해 기업의 사내 복지를 위한 다양한 가격대와 풍성한 구성의 식사를
+            제안하고자 합니다. 이는{" "}
             <HighlightText>
               기업의 아침 복지 고민을 해결하는 데 도움을 줄 것
             </HighlightText>
