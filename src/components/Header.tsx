@@ -164,6 +164,7 @@ export default function Header() {
     { href: "/menu", label: "메뉴" },
     { href: "/about", label: "소개" },
     { href: "/contact", label: "문의" },
+    { href: "/order", label: "주문" },
   ];
 
   return (

@@ -11,6 +11,7 @@ export const menuData: MenuCategory[] = [
         category: "sandwiches",
         description: "달콤한 불고기와 신선한 야채의 조화",
         image: "/sandwich/bulgogi-sandwich.png",
+        price: 6500,
       },
       {
         id: "s2",
@@ -18,6 +19,7 @@ export const menuData: MenuCategory[] = [
         category: "sandwiches",
         description: "바질 향이 가득한 치킨 샌드위치",
         image: "/sandwich/chicken-basil-sandwich.png",
+        price: 7000,
       },
       {
         id: "s3",
@@ -25,6 +27,7 @@ export const menuData: MenuCategory[] = [
         category: "sandwiches",
         description: "부드러운 리코타 치즈와 달콤한 단호박",
         image: "/sandwich/danhobak-sandwich.png",
+        price: 6800,
       },
       {
         id: "s4",
@@ -32,6 +35,7 @@ export const menuData: MenuCategory[] = [
         category: "sandwiches",
         description: "탱글탱글한 통새우가 가득",
         image: "/sandwich/shrimp-sandwich.png",
+        price: 8500,
       },
       {
         id: "s5",
@@ -39,6 +43,7 @@ export const menuData: MenuCategory[] = [
         category: "sandwiches",
         description: "고소한 계란과 아삭한 양배추",
         image: "/sandwich/egg-cabbage-sandwich.png",
+        price: 6000,
       },
       {
         id: "s6",
@@ -46,18 +51,21 @@ export const menuData: MenuCategory[] = [
         category: "sandwiches",
         description: "클래식한 클럽 샌드위치",
         image: "/sandwich/club-sandwich.png",
+        price: 7500,
       },
       {
         id: "s7",
         name: "땅콩 딸기잼",
         category: "sandwiches",
         description: "고소한 땅콩버터와 달콤한 딸기잼",
+        price: 5500,
       },
       {
         id: "s8",
         name: "모닝빵 에그",
         category: "sandwiches",
         description: "부드러운 모닝빵과 계란",
+        price: 5000,
       },
       {
         id: "s9",
@@ -65,12 +73,14 @@ export const menuData: MenuCategory[] = [
         category: "sandwiches",
         description: "크래미와 유부의 특별한 조합",
         image: "/sandwich/crammy-yuboo.jpg",
+        price: 6500,
       },
       {
         id: "s10",
         name: "불고기 유부초밥",
         category: "sandwiches",
         description: "불고기를 넣은 특제 유부초밥",
+        price: 7000,
       },
       {
         id: "s11",
@@ -78,12 +88,14 @@ export const menuData: MenuCategory[] = [
         category: "sandwiches",
         description: "베이글 샌드위치",
         image: "/sandwich/baychell-sandwich.jpg",
+        price: 7500,
       },
       {
         id: "s12",
         name: "대만풍",
         category: "sandwiches",
         description: "대만식 특제 샌드위치",
+        price: 8000,
       },
       {
         id: "s13",
@@ -91,6 +103,7 @@ export const menuData: MenuCategory[] = [
         category: "sandwiches",
         description: "바삭한 크로와상과 소세지",
         image: "/sandwich/sausage-sandwich.png",
+        price: 7000,
       },
       {
         id: "s14",
@@ -98,6 +111,7 @@ export const menuData: MenuCategory[] = [
         category: "sandwiches",
         description: "베트남식 월남쌈 샌드위치",
         image: "/sandwich/wallnam-sandwich.jpg",
+        price: 8500,
       },
       {
         id: "s15",
@@ -105,6 +119,7 @@ export const menuData: MenuCategory[] = [
         category: "sandwiches",
         description: "구운 파니니 샌드위치",
         image: "/sandwich/panini-sandwich.png",
+        price: 7500,
       },
     ],
   },
@@ -117,6 +132,7 @@ export const menuData: MenuCategory[] = [
         name: "모짜렐라 치즈",
         category: "salads",
         description: "신선한 모짜렐라 치즈 샐러드",
+        price: 8500,
       },
       {
         id: "sa2",
@@ -124,6 +140,7 @@ export const menuData: MenuCategory[] = [
         category: "salads",
         description: "올리브와 페타치즈의 지중해 샐러드",
         image: "/salad/sea-salad.png",
+        price: 9000,
       },
       {
         id: "sa3",
@@ -131,6 +148,7 @@ export const menuData: MenuCategory[] = [
         category: "salads",
         description: "바삭한 가라아게 치킨 샐러드",
         image: "/salad/garage-salad.png",
+        price: 10000,
       },
       {
         id: "sa4",
@@ -138,6 +156,7 @@ export const menuData: MenuCategory[] = [
         category: "salads",
         description: "담백한 닭가슴살 샐러드",
         image: "/salad/chicken-salad.png",
+        price: 9500,
       },
       {
         id: "sa5",
@@ -145,18 +164,21 @@ export const menuData: MenuCategory[] = [
         category: "salads",
         description: "부드러운 리코타 치즈 샐러드",
         image: "/salad/ricotta-salad.png",
+        price: 8800,
       },
       {
         id: "sa6",
         name: "불고기",
         category: "salads",
         description: "달콤한 불고기 샐러드",
+        price: 10500,
       },
       {
         id: "sa7",
         name: "훈제오리",
         category: "salads",
         description: "고소한 훈제오리 샐러드",
+        price: 11000,
       },
       {
         id: "sa8",
@@ -164,6 +186,7 @@ export const menuData: MenuCategory[] = [
         category: "salads",
         description: "구운 두부 샐러드",
         image: "/salad/grill-tofu-salad.png",
+        price: 8000,
       },
       {
         id: "sa9",
@@ -171,6 +194,7 @@ export const menuData: MenuCategory[] = [
         category: "salads",
         description: "상큼한 당근 라페 샐러드",
         image: "/salad/carrot-salad.png",
+        price: 7500,
       },
       {
         id: "sa10",
@@ -178,6 +202,7 @@ export const menuData: MenuCategory[] = [
         category: "salads",
         description: "모짜렐라 치즈 샐러드",
         image: "/salad/mozza-salad.png",
+        price: 8500,
       },
       {
         id: "sa11",
@@ -185,6 +210,7 @@ export const menuData: MenuCategory[] = [
         category: "salads",
         description: "신선한 참치 샐러드",
         image: "/salad/tuna-salad.png",
+        price: 9500,
       },
       {
         id: "sa12",
@@ -192,6 +218,7 @@ export const menuData: MenuCategory[] = [
         category: "salads",
         description: "매콤한 멕시칸 샐러드",
         image: "/salad/mexican-salad.png",
+        price: 9000,
       },
       {
         id: "sa13",
@@ -199,6 +226,7 @@ export const menuData: MenuCategory[] = [
         category: "salads",
         description: "다양한 재료의 모듬 샐러드",
         image: "/salad/mixed-salad.png",
+        price: 8000,
       },
     ],
   },
@@ -212,6 +240,7 @@ export const menuData: MenuCategory[] = [
         category: "lunchbox",
         description: "컵과일 + 샌드위치 + 쿠키 + 팩 음료",
         image: "/lunchbox/lunchbox-1.png",
+        price: 12000,
       },
       {
         id: "l2",
@@ -219,6 +248,7 @@ export const menuData: MenuCategory[] = [
         category: "lunchbox",
         description: "컵과일 + 샌드위치 + 쿠키 + 팩 음료",
         image: "/lunchbox/lunchbox-2.png",
+        price: 13000,
       },
       {
         id: "l3",
@@ -226,6 +256,7 @@ export const menuData: MenuCategory[] = [
         category: "lunchbox",
         description: "푸짐한 2칸 도시락",
         image: "/lunchbox/lunchbox-3.png",
+        price: 15000,
       },
     ],
   },
@@ -238,12 +269,14 @@ export const menuData: MenuCategory[] = [
         name: "아이스 아메리카노",
         category: "beverages",
         description: "시원한 아이스 아메리카노 (캔 포장)",
+        price: 3500,
       },
       {
         id: "b2",
         name: "아이스 라떼",
         category: "beverages",
         description: "부드러운 아이스 라떼 (캔 포장)",
+        price: 4000,
       },
       {
         id: "b3",
@@ -251,6 +284,7 @@ export const menuData: MenuCategory[] = [
         category: "beverages",
         description: "건강한 디톡스주스 (400ml)",
         image: "/beverage/detox-juice.png",
+        price: 6500,
       },
       {
         id: "b4",
@@ -258,18 +292,21 @@ export const menuData: MenuCategory[] = [
         category: "beverages",
         description: "신선한 오렌지 착즙주스 (200ml)",
         image: "/beverage/orange-juice.png",
+        price: 5000,
       },
       {
         id: "b5",
         name: "자몽 착즙주스",
         category: "beverages",
         description: "상큼한 자몽 착즙주스 (200ml)",
+        price: 5000,
       },
       {
         id: "b6",
         name: "몽지 착즙주스",
         category: "beverages",
         description: "오렌지 + 자몽 믹스 (200ml)",
+        price: 5500,
       },
     ],
   },
@@ -283,6 +320,7 @@ export const menuData: MenuCategory[] = [
         category: "desserts",
         description: "진한 그릭 요거트와 꿀, 그래놀라",
         image: "/dessert/greek-yogurt.jpg",
+        price: 5500,
       },
       {
         id: "d2",
@@ -290,6 +328,7 @@ export const menuData: MenuCategory[] = [
         category: "desserts",
         description: "딸기, 블루베리, 라즈베리 등",
         image: "/dessert/cup-fruit.png",
+        price: 4500,
       },
       {
         id: "d3",
@@ -297,6 +336,7 @@ export const menuData: MenuCategory[] = [
         category: "desserts",
         description: "망고, 파인애플, 용과 등",
         image: "/dessert/cup-fruit.png",
+        price: 5000,
       },
       {
         id: "d4",
@@ -304,6 +344,7 @@ export const menuData: MenuCategory[] = [
         category: "desserts",
         description: "시원한 수박 (여름철 한정)",
         image: "/dessert/cup-fruit.png",
+        price: 4000,
       },
       {
         id: "d5",
@@ -311,6 +352,7 @@ export const menuData: MenuCategory[] = [
         category: "desserts",
         description: "사과, 배, 포도 등",
         image: "/dessert/cup-fruit.png",
+        price: 4500,
       },
     ],
   },
@@ -324,6 +366,7 @@ export const menuData: MenuCategory[] = [
         category: "catering",
         description: "파티와 모임을 위한 케이터링 박스",
         image: "/catering/breakfast-pack-catering.jpg",
+        price: 50000,
       },
       {
         id: "c2",
@@ -331,6 +374,7 @@ export const menuData: MenuCategory[] = [
         category: "catering",
         description: "직장인을 위한 건강한 조식 서비스",
         image: "/catering/breakfast-full-catering.jpg",
+        price: 100000,
       },
       {
         id: "c3",
@@ -338,6 +382,7 @@ export const menuData: MenuCategory[] = [
         category: "catering",
         description: "대용량 과일 박스",
         image: "/catering/fruit-catering1.jpg",
+        price: 80000,
       },
     ],
   },
