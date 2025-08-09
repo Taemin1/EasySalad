@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { theme } from "@/styles/theme";
@@ -65,6 +66,16 @@ const Input = styled.input`
     outline: none;
     border-color: ${theme.colors.primary};
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: #a0a0a0;
+    opacity: 0.6;
+  }
 `;
 
 const Textarea = styled.textarea`
@@ -77,30 +88,52 @@ const Textarea = styled.textarea`
   resize: vertical;
   transition: all ${theme.transitions.fast};
 
+  &::placeholder {
+    color: #a0a0a0;
+    opacity: 0.6;
+  }
+
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;
 
-const SubmitButton = styled(motion.button)`
+// shouldForwardProp을 사용하여 isLoading이 DOM으로 전달되지 않도록 함
+const SubmitButton = styled(motion.button, {
+  shouldForwardProp: (prop) => prop !== "isLoading",
+})<{ isLoading?: boolean }>`
   width: 100%;
   padding: 15px;
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.primary} 0%,
-    ${theme.colors.secondary} 100%
-  );
+  background: ${(props) =>
+    props.isLoading
+      ? theme.colors.text.secondary
+      : `linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.secondary} 100%)`};
   color: white;
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 8px;
-  cursor: pointer;
+  cursor: ${(props) => (props.isLoading ? "not-allowed" : "pointer")};
   transition: all ${theme.transitions.normal};
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 
-  &:hover {
+  &:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: ${theme.shadows.md};
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 `;
 
@@ -148,11 +181,112 @@ const MapPlaceholder = styled.div`
   color: ${theme.colors.text.secondary};
 `;
 
+// shouldForwardProp을 사용하여 type이 DOM으로 전달되지 않도록 함
+const Alert = styled(motion.div, {
+  shouldForwardProp: (prop) => prop !== "alertType",
+})<{ alertType: "success" | "error" }>`
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: ${(props) =>
+    props.alertType === "success" ? "#10b98120" : "#ef444420"};
+  border: 1px solid
+    ${(props) => (props.alertType === "success" ? "#10b981" : "#ef4444")};
+  color: ${(props) => (props.alertType === "success" ? "#059669" : "#dc2626")};
+  font-weight: 500;
+`;
+
+const LoadingSpinner = styled.div`
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ffffff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+}
+
 export default function ContactPage() {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [alert, setAlert] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // 폼 제출 로직
-    alert("문의가 접수되었습니다. 빠른 시일 내에 답변드리겠습니다.");
+    setIsLoading(true);
+    setAlert(null);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setAlert({
+          type: "success",
+          message:
+            "문의가 성공적으로 접수되었습니다. 빠른 시일 내에 답변드리겠습니다.",
+        });
+        // 폼 초기화
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+      } else {
+        throw new Error(data.error || "문의 전송에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+      setAlert({
+        type: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "문의 전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      });
+    } finally {
+      setIsLoading(false);
+      // 알림 메시지 자동 제거 (5초 후)
+      setTimeout(() => setAlert(null), 5000);
+    }
   };
 
   return (
@@ -172,32 +306,82 @@ export default function ContactPage() {
           transition={{ delay: 0.2 }}
           onSubmit={handleSubmit}
         >
+          {alert && (
+            <Alert
+              alertType={alert.type}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+            >
+              {alert.message}
+            </Alert>
+          )}
+
           <FormGroup>
-            <Label htmlFor="name">이름</Label>
-            <Input type="text" id="name" required />
+            <Label htmlFor="name">이름 *</Label>
+            <Input
+              type="text"
+              id="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              disabled={isLoading}
+              placeholder="홍길동"
+            />
           </FormGroup>
 
           <FormGroup>
-            <Label htmlFor="email">이메일</Label>
-            <Input type="email" id="email" required />
+            <Label htmlFor="email">이메일 *</Label>
+            <Input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              disabled={isLoading}
+              placeholder="example@email.com"
+            />
           </FormGroup>
 
           <FormGroup>
             <Label htmlFor="phone">연락처</Label>
-            <Input type="tel" id="phone" />
+            <Input
+              type="tel"
+              id="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              disabled={isLoading}
+              placeholder="010-1234-5678"
+            />
           </FormGroup>
 
           <FormGroup>
-            <Label htmlFor="message">문의 내용</Label>
-            <Textarea id="message" required />
+            <Label htmlFor="message">문의 내용 *</Label>
+            <Textarea
+              id="message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+              disabled={isLoading}
+              placeholder="문의하실 내용을 자세히 작성해주세요."
+            />
           </FormGroup>
 
           <SubmitButton
             type="submit"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={!isLoading ? { scale: 1.02 } : {}}
+            whileTap={!isLoading ? { scale: 0.98 } : {}}
+            disabled={isLoading}
+            isLoading={isLoading}
           >
-            문의 보내기
+            {isLoading ? (
+              <>
+                <LoadingSpinner />
+                전송 중...
+              </>
+            ) : (
+              "문의 보내기"
+            )}
           </SubmitButton>
         </ContactForm>
 
@@ -210,7 +394,7 @@ export default function ContactPage() {
             <InfoTitle>연락처 정보</InfoTitle>
             <InfoItem>
               <InfoIcon>📞</InfoIcon>
-              <span>02-1234-5678</span>
+              <span>02-6031-8927</span>
             </InfoItem>
             <InfoItem>
               <InfoIcon>📧</InfoIcon>
@@ -226,7 +410,7 @@ export default function ContactPage() {
             </InfoItem>
           </InfoCard>
 
-          <MapPlaceholder>🗺️ 지도 영역</MapPlaceholder>
+          <MapPlaceholder>문의 설명 영역</MapPlaceholder>
         </InfoSection>
       </ContentGrid>
     </Container>
