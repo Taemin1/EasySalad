@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "@/styles/theme";
@@ -288,6 +289,7 @@ const getEmoji = (category: string) => {
 };
 
 export default function OrderPage() {
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState("sandwiches");
   const [cart, setCart] = useState<CartItem[]>([]);
 
@@ -328,9 +330,12 @@ export default function OrderPage() {
 
   const handleCheckout = () => {
     if (cart.length === 0) return;
-    // 결제 페이지로 이동하는 로직
-    alert("결제 페이지로 이동합니다.");
-    // router.push('/checkout');
+    
+    // 장바구니 데이터를 localStorage에 저장
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // 결제 페이지로 이동
+    router.push('/checkout');
   };
 
   const currentCategory = menuData.find((cat) => cat.id === selectedCategory);

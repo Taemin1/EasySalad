@@ -245,11 +245,15 @@ export default function Hero() {
   // 자동 슬라이드
   useEffect(() => {
     const timer = setInterval(() => {
-      handleNext();
+      setCurrentIndex((prev) => {
+        const maxIndex = Math.max(0, slideImages.length - slidesPerView);
+        const next = prev + 1;
+        return next > maxIndex ? 0 : next;
+      });
     }, 4000);
 
     return () => clearInterval(timer);
-  }, [currentIndex, slidesPerView]);
+  }, [slidesPerView, slideImages.length]);
 
   const maxIndex = Math.max(0, slideImages.length - slidesPerView);
 
@@ -279,7 +283,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          Ezy Salad - 건강한 하루의 시작
+          ezySalad - 건강한 하루의 시작
         </Title>
 
         <Subtitle

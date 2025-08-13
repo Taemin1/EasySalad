@@ -82,7 +82,7 @@ export default function Footer() {
     <FooterContainer>
       <FooterContent>
         <FooterSection>
-          <FooterTitle>EasySalad</FooterTitle>
+          <FooterTitle>ezySalad</FooterTitle>
           <ContactInfo>건강한 한 끼의 시작</ContactInfo>
           <ContactInfo>신선한 재료로 만드는 프리미엄 샐러드</ContactInfo>
           <SocialLinks>
@@ -123,7 +123,7 @@ export default function Footer() {
         </FooterSection>
       </FooterContent>
 
-      <Copyright>© 2024 EasySalad. All rights reserved.</Copyright>
+      <Copyright>© 2024 ezySalad. All rights reserved.</Copyright>
     </FooterContainer>
   );
 }

@@ -145,7 +145,7 @@ export default function AboutPage() {
             <HighlightText>건강하고 간편하며 편리한 샐러드</HighlightText>를
             제공하기 위해 설립된 <HighlightText>샐러드 전문 기업</HighlightText>
             입니다. 2012년 론칭한{" "}
-            <HighlightText>Ezysalad(이지샐러드)</HighlightText>는 현재 시청점을
+            <HighlightText>ezySalad(이지샐러드)</HighlightText>는 현재 시청점을
             운영 중이며, 단체 주문을 위한 조리 시설은 종각역 인근에 마련되어
             있습니다.
           </Text>
@@ -202,11 +202,11 @@ export default function AboutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <SectionTitle>새로운 도전: 이지밀(Ezymil) 브랜드</SectionTitle>
+          <SectionTitle>새로운 도전: 이지밀(Ezymeal) 브랜드</SectionTitle>
           <Text>
             이와 같은 경험을 바탕으로, 앞으로는{" "}
             <HighlightText>
-              &apos;이지밀(Ezymil)&apos; 브랜드 론칭
+              &apos;이지밀(Ezymeal)&apos; 브랜드 론칭
             </HighlightText>
             을 통해 기업의 사내 복지를 위한 다양한 가격대와 풍성한 구성의 식사를
             제안하고자 합니다. 이는{" "}
