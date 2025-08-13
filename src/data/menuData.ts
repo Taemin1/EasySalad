@@ -384,6 +384,13 @@ export const menuData: MenuCategory[] = [
         image: "/catering/fruit-catering1.jpg",
         price: 80000,
       },
+      {
+        id: "c4",
+        name: "결제 테스트",
+        category: "catering",
+        description: "결제 테스트",
+        price: 1,
+      },
     ],
   },
 ];
