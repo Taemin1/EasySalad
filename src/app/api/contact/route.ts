@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.RECIPIENT_EMAIL, // 수신자 이메일 (본인 이메일)
-      subject: `[EasySalad 문의] ${name}님의 문의사항`,
+      subject: `[ezySalad 문의] ${name}님의 문의사항`,
       html: `
         <div style="font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="background: linear-gradient(135deg, #4AE54A 0%, #22C55E 100%); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
     const autoReplyOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "[EasySalad] 문의가 접수되었습니다",
+      subject: "[ezySalad] 문의가 접수되었습니다",
       html: `
         <div style="font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="background: linear-gradient(135deg, #4AE54A 0%, #22C55E 100%); padding: 30px; border-radius: 12px 12px 0 0; text-align: center;">
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
             <p style="color: #374151; margin-bottom: 20px;">안녕하세요, ${name}님!</p>
             
             <p style="color: #4b5563; line-height: 1.6; margin-bottom: 20px;">
-              EasySalad에 문의해 주셔서 감사합니다.<br>
+              ezySalad에 문의해 주셔서 감사합니다.<br>
               고객님의 문의사항을 확인했으며, 빠른 시일 내에 답변드리겠습니다.
             </p>
             
