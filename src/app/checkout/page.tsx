@@ -442,7 +442,7 @@ function CheckoutPageContent() {
     );
   };
 
-  const deliveryFee = 3000;
+  const deliveryFee = 0;
   const calculateTotal = () => calculateSubtotal() + deliveryFee;
 
   const handleAddressSearch = () => {
