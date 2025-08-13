@@ -176,8 +176,8 @@ export default function Header() {
       <Nav>
         <LogoWrapper onClick={() => router.push("/")}>
           <Image
-            src="/ezySaladLogo.png"
-            alt="ezySalad Logo"
+            src="/EzySaladLogo.png"
+            alt="EzySalad Logo"
             width={150}
             height={50}
           />
