@@ -389,7 +389,7 @@ export const menuData: MenuCategory[] = [
         name: "결제 테스트",
         category: "catering",
         description: "결제 테스트",
-        price: 1,
+        price: 100,
       },
     ],
   },
