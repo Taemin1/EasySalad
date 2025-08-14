@@ -237,6 +237,12 @@ const TotalSection = styled.div`
   border-top: 2px solid ${theme.colors.background};
 `;
 
+const InfoSetion = styled.div`
+  font-size: 0.8rem;
+  color: #ff6b6b;
+  margin-top: 20px;
+`;
+
 // TotalRow (transient prop 사용)
 const TotalRow = styled.div<{ $isFinal?: boolean }>`
   display: flex;
@@ -847,6 +853,11 @@ function CheckoutPageContent() {
                 <span>{calculateTotal().toLocaleString()}원</span>
               </TotalRow>
             </TotalSection>
+            <InfoSetion>
+              <p>서울시 내 주문 시 배송비 3만원 </p>
+              <p>인천, 분당, 판교 주문 시 배송비 5만원</p>
+              <p>30만원 이상 주문 시 지역 관계없이 배송비 무료</p>
+            </InfoSetion>
 
             <CheckoutButton
               onClick={handleOrder}

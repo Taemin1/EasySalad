@@ -196,12 +196,7 @@ const createOrderEmailTemplate = (
         </p>
       </div>
       
-      <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-        <p style="color: #666; font-size: 14px; margin: 0;">
-          문의사항이 있으시면 언제든 연락해주세요.<br/>
-          ezySalad 팀 드림
-        </p>
-      </div>
+      
     </body>
     </html>
   `;

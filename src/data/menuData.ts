@@ -58,6 +58,7 @@ export const menuData: MenuCategory[] = [
         name: "땅콩 딸기잼",
         category: "sandwiches",
         description: "고소한 땅콩버터와 달콤한 딸기잼",
+        image: "/sandwich/peanut-strawberry-jam-sandwich.jpg",
         price: 5500,
       },
       {
@@ -65,6 +66,7 @@ export const menuData: MenuCategory[] = [
         name: "모닝빵 에그",
         category: "sandwiches",
         description: "부드러운 모닝빵과 계란",
+        image: "/sandwich/morning-bread-egg-sandwich.jpg",
         price: 5000,
       },
       {
@@ -80,6 +82,7 @@ export const menuData: MenuCategory[] = [
         name: "불고기 유부초밥",
         category: "sandwiches",
         description: "불고기를 넣은 특제 유부초밥",
+        image: "/sandwich/bulgogi-yuboo.jpg",
         price: 7000,
       },
       {
@@ -95,6 +98,7 @@ export const menuData: MenuCategory[] = [
         name: "대만풍",
         category: "sandwiches",
         description: "대만식 특제 샌드위치",
+        image: "/sandwich/daeman-sandwich.jpg",
         price: 8000,
       },
       {
@@ -127,13 +131,6 @@ export const menuData: MenuCategory[] = [
     id: "salads",
     name: "샐러드",
     items: [
-      {
-        id: "sa1",
-        name: "모짜렐라 치즈",
-        category: "salads",
-        description: "신선한 모짜렐라 치즈 샐러드",
-        price: 8500,
-      },
       {
         id: "sa2",
         name: "지중해풍",
@@ -364,25 +361,25 @@ export const menuData: MenuCategory[] = [
         id: "c1",
         name: "박스 케이터링",
         category: "catering",
-        description: "파티와 모임을 위한 케이터링 박스",
+        description: "(문의 필요) 파티와 모임을 위한 케이터링 박스",
         image: "/catering/breakfast-pack-catering.jpg",
-        price: 50000,
+        price: 1,
       },
       {
         id: "c2",
         name: "회사 조식 서비스",
         category: "catering",
-        description: "직장인을 위한 건강한 조식 서비스",
+        description: "(문의 필요) 직장인을 위한 건강한 조식 서비스",
         image: "/catering/breakfast-full-catering.jpg",
-        price: 100000,
+        price: 1,
       },
       {
         id: "c3",
         name: "벌크과일 박스",
         category: "catering",
-        description: "대용량 과일 박스",
+        description: "(문의 필요) 대용량 과일 박스",
         image: "/catering/fruit-catering1.jpg",
-        price: 80000,
+        price: 1,
       },
       {
         id: "c4",

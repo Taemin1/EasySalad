@@ -111,19 +111,20 @@ export default function Footer() {
         <FooterSection>
           <FooterTitle>영업 시간</FooterTitle>
           <ContactInfo>월-금: 08:00 - 20:00</ContactInfo>
-          <ContactInfo>토: 09:00 - 18:00</ContactInfo>
-          <ContactInfo>일: 휴무</ContactInfo>
+          <ContactInfo>토, 일: 휴무</ContactInfo>
         </FooterSection>
 
         <FooterSection>
           <FooterTitle>문의</FooterTitle>
           <ContactInfo>📞 02-1234-5678</ContactInfo>
           <ContactInfo>📧 info@easysalad.com</ContactInfo>
-          <ContactInfo>📍 서울시 강남구 테헤란로 123</ContactInfo>
+          <ContactInfo>
+            📍 서울 중구 남대문로9길 40 215호(복도 맨 끝)
+          </ContactInfo>
         </FooterSection>
       </FooterContent>
 
-      <Copyright>© 2024 ezySalad. All rights reserved.</Copyright>
+      <Copyright>© 2025 ezySalad. All rights reserved.</Copyright>
     </FooterContainer>
   );
 }
