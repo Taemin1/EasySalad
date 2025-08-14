@@ -1,4 +1,4 @@
-import type { NextConfig } from 'next'
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     emotion: true,
   },
   images: {
-    domains: ["your-supabase-storage-url.supabase.co"],
+    domains: ["https://msnpctknnynaeoaujccp.supabase.co"],
   },
   webpack: (config, { isServer }) => {
     // 클라이언트 사이드에서만 포트원 SDK 로드
