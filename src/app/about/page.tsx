@@ -72,56 +72,7 @@ const ExperienceItem = styled.li`
     left: 0;
   }
 `;
-
-const ValueGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
-`;
-
-const ValueCard = styled(motion.div)`
-  padding: 30px;
-  background-color: ${theme.colors.surface};
-  border-radius: 16px;
-  box-shadow: ${theme.shadows.sm};
-  text-align: center;
-`;
-
-const ValueIcon = styled.div`
-  font-size: 3rem;
-  margin-bottom: 15px;
-`;
-
-const ValueTitle = styled.h3`
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  color: ${theme.colors.text.primary};
-`;
-
-const ValueDescription = styled.p`
-  color: ${theme.colors.text.secondary};
-  line-height: 1.6;
-`;
-
 export default function AboutPage() {
-  const values = [
-    {
-      icon: "🥗",
-      title: "전문성",
-      description: "2012년부터 축적된 샐러드 전문 기업의 노하우",
-    },
-    {
-      icon: "🏢",
-      title: "B2B 특화",
-      description: "기업 복지를 위한 맞춤형 케이터링 서비스",
-    },
-    {
-      icon: "🚀",
-      title: "혁신",
-      description: "지속적인 혁신과 다양한 콘텐츠 개발",
-    },
-  ];
 
   return (
     <Container>
@@ -233,27 +184,7 @@ export default function AboutPage() {
           </Text>
         </Section>
 
-        <Section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-        >
-          <SectionTitle>우리의 강점</SectionTitle>
-          <ValueGrid>
-            {values.map((value, index) => (
-              <ValueCard
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.0 + index * 0.1 }}
-              >
-                <ValueIcon>{value.icon}</ValueIcon>
-                <ValueTitle>{value.title}</ValueTitle>
-                <ValueDescription>{value.description}</ValueDescription>
-              </ValueCard>
-            ))}
-          </ValueGrid>
-        </Section>
+       
       </Content>
     </Container>
   );
