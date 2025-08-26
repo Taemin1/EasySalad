@@ -6,6 +6,7 @@ import Hero from "@/components/Hero";
 import CategorySection from "@/components/CategorySection";
 import { menuData } from "@/data/menuData";
 import { theme } from "@/styles/theme";
+import Image from "next/image";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -47,11 +48,6 @@ const FeatureIcon = styled.div`
   width: 80px;
   height: 80px;
   margin: 0 auto 20px;
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.primary} 0%,
-    ${theme.colors.secondary} 100%
-  );
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -89,20 +85,26 @@ const SectionTitle = styled(motion.h2)`
 export default function Home() {
   const features = [
     {
-      icon: "🥗",
-      title: "신선한 재료",
-      description: "매일 아침 신선한 재료를 준비하여 최상의 맛을 제공합니다.",
-    },
-    {
-      icon: "🌿",
-      title: "건강한 선택",
-      description: "영양가 높은 재료로 구성된 다양한 건강 메뉴를 만나보세요.",
-    },
-    {
-      icon: "🚚",
-      title: "케이터링 서비스",
+      image: (
+        <Image src="/no-sugar.png" alt="No Sugar" width={80} height={80} />
+      ),
+      title: "No Sugar로 건강하게",
       description:
-        "회사 조식부터 파티 케이터링까지 맞춤형 서비스를 제공합니다.",
+        "보다 건강하고 가치있는 샐러드를 제공하기 위해 토핑과 드레싱에 설탕을 사용하지 않았습니다.",
+    },
+    {
+      image: <Image src="/no-time.png" alt="No Time" width={80} height={80} />,
+      title: "바로 만들어서 간편하게",
+      description:
+        "주문 즉시 매장에서 바로 만들어주는 시스템으로 신선한 샐러드를 빠르고 간편하게 즐길 수 있습니다.",
+    },
+    {
+      image: (
+        <Image src="/no-money.png" alt="No Money" width={80} height={80} />
+      ),
+      title: "합리적인 가격으로 부담없이",
+      description:
+        "좋은 재료로 건강하고 맛있는 샐러드를 만들고 가장 합리적인 가격으로 내놓기 위해 노력합니다.",
     },
   ];
 
@@ -121,7 +123,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <FeatureIcon>{feature.icon}</FeatureIcon>
+              <FeatureIcon>{feature.image}</FeatureIcon>
               <FeatureTitle>{feature.title}</FeatureTitle>
               <FeatureDescription>{feature.description}</FeatureDescription>
             </FeatureCard>
