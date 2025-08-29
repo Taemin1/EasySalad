@@ -29,6 +29,8 @@ interface DeliveryInfo {
   deliveryTime: string;
 }
 
+type PaymentMethod = "CARD" | "TRANSFER";
+
 interface PaymentResponse {
   paymentId?: string;
   code?: string;
@@ -85,11 +87,17 @@ const Section = styled(motion.div)`
 
 const SectionTitle = styled.h2`
   font-size: 1.5rem;
-  margin-bottom: 25px;
   color: ${theme.colors.text.primary};
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 5px;
+`;
+
+const SectionSubTitle = styled.p`
+  font-size: 0.9rem;
+  color: ${theme.colors.text.secondary};
+  margin-bottom: 25px;
 `;
 
 const FormGroup = styled.div`
@@ -334,6 +342,50 @@ const BackToMenuButton = styled(motion.button)`
   }
 `;
 
+const PaymentMethodSection = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 10px;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const PaymentMethodOption = styled.div<{ $isSelected?: boolean }>`
+  padding: 15px;
+  border: 2px solid
+    ${({ $isSelected }) =>
+      $isSelected ? theme.colors.primary : theme.colors.background};
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all ${theme.transitions.fast};
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? `${theme.colors.primary}10` : theme.colors.surface};
+
+  &:hover {
+    border-color: ${theme.colors.primary};
+  }
+
+  .icon {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .title {
+    font-weight: 600;
+    color: ${theme.colors.text.primary};
+    margin-bottom: 4px;
+  }
+
+  .description {
+    font-size: 0.85rem;
+    color: ${theme.colors.text.secondary};
+  }
+`;
+
 // 다음 우편번호 서비스 타입 선언
 declare global {
   interface Window {
@@ -365,6 +417,7 @@ function CheckoutPageContent() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("CARD");
 
   const [deliveryInfo, setDeliveryInfo] = useState<DeliveryInfo>({
     name: "",
@@ -410,20 +463,39 @@ function CheckoutPageContent() {
     }
   }, []);
 
+  const addBusinessDays = (startDate: Date, businessDays: number): Date => {
+    const result = new Date(startDate);
+    let daysAdded = 0;
+    
+    while (daysAdded < businessDays) {
+      result.setDate(result.getDate() + 1);
+      // 토요일(6), 일요일(0) 제외
+      if (result.getDay() !== 0 && result.getDay() !== 6) {
+        daysAdded++;
+      }
+    }
+    
+    return result;
+  };
+
   const getMinDate = () => {
     const today = new Date();
-    const minDate = new Date(today);
-    minDate.setDate(today.getDate() + 2);
+    const minDate = addBusinessDays(today, 2);
     return minDate.toISOString().split("T")[0];
   };
 
   const timeOptions = [
     { value: "", label: "시간을 선택해주세요" },
-    { value: "09:00-11:00", label: "오전 9시 - 11시" },
-    { value: "11:00-13:00", label: "오전 11시 - 오후 1시" },
-    { value: "13:00-15:00", label: "오후 1시 - 3시" },
-    { value: "15:00-17:00", label: "오후 3시 - 5시" },
-    { value: "17:00-19:00", label: "오후 5시 - 7시" },
+    { value: "09:00-10:00", label: "오전 9시 - 10시" },
+    { value: "10:00-11:00", label: "오전 10시 - 11시" },
+    { value: "11:00-12:00", label: "오전 11시 - 12시" },
+    { value: "12:00-13:00", label: "오후 12시 - 1시" },
+    { value: "13:00-14:00", label: "오후 1시 - 2시" },
+    { value: "14:00-15:00", label: "오후 2시 - 3시" },
+    { value: "15:00-16:00", label: "오후 3시 - 4시" },
+    { value: "16:00-17:00", label: "오후 4시 - 5시" },
+    { value: "17:00-18:00", label: "오후 5시 - 6시" },
+    { value: "18:00-19:00", label: "오후 6시 - 7시" },
   ];
 
   const handleInputChange = (field: keyof DeliveryInfo, value: string) => {
@@ -448,8 +520,46 @@ function CheckoutPageContent() {
     );
   };
 
-  const deliveryFee = 0;
-  const calculateTotal = () => calculateSubtotal() + deliveryFee;
+  const getDeliveryFee = () => {
+    const subtotal = calculateSubtotal();
+
+    // 30만원 이상이면 무료배송
+    if (subtotal >= 300000) {
+      return 0;
+    }
+
+    const address = deliveryInfo.address;
+
+    // 서울 지역 확인
+    if (
+      address.includes("서울") ||
+      address.includes("서울시") ||
+      address.includes("서울특별시")
+    ) {
+      return 30000;
+    }
+
+    // 인천, 분당, 판교 지역 확인
+    if (
+      address.includes("인천") ||
+      address.includes("인천시") ||
+      address.includes("인천광역시") ||
+      address.includes("분당") ||
+      (address.includes("판교") &&
+        (address.includes("성남") || address.includes("경기")))
+    ) {
+      return 50000;
+    }
+
+    // 배송 불가 지역
+    return -1;
+  };
+
+  const deliveryFee = getDeliveryFee();
+  const calculateTotal = () =>
+    deliveryFee === -1
+      ? calculateSubtotal()
+      : calculateSubtotal() + deliveryFee;
 
   const handleAddressSearch = () => {
     if (!window.daum) {
@@ -499,19 +609,22 @@ function CheckoutPageContent() {
 
     if (!deliveryInfo.address.trim()) {
       newErrors.address = "배송 주소를 입력해주세요.";
+    } else if (getDeliveryFee() === -1) {
+      newErrors.address =
+        "죄송합니다. 해당 지역은 배송이 불가능합니다. (서울, 인천, 분당, 판교 지역만 배송 가능)";
     }
 
     if (!deliveryInfo.deliveryDate) {
       newErrors.deliveryDate = "배송 날짜를 선택해주세요.";
     } else {
       const deliveryDate = new Date(deliveryInfo.deliveryDate);
-      const minDate = new Date();
-      minDate.setDate(minDate.getDate() + 2);
+      const minDate = addBusinessDays(new Date(), 2);
       minDate.setHours(0, 0, 0, 0);
+      deliveryDate.setHours(0, 0, 0, 0);
 
       if (deliveryDate < minDate) {
         newErrors.deliveryDate =
-          "배송일은 주문일 기준 2일 후부터 선택 가능합니다.";
+          "배송일은 주문일 기준 영업일 2일 후부터 선택 가능합니다. (주말 제외)";
       }
     }
 
@@ -567,7 +680,7 @@ function CheckoutPageContent() {
         orderName: `ezySalad 주문 (${order.orderNumber})`,
         totalAmount: order.totalAmount,
         currency: Currency.KRW,
-        payMethod: "CARD",
+        payMethod: paymentMethod,
         customer: {
           fullName: order.customerName,
           phoneNumber: order.customerPhone,
@@ -772,13 +885,45 @@ function CheckoutPageContent() {
             </FormGroup>
           </Section>
 
-          {/* 배송 날짜/시간 */}
+          {/* 결제 방법 */}
           <Section
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
+            <SectionTitle>💳 결제 방법</SectionTitle>
+
+            <PaymentMethodSection>
+              <PaymentMethodOption
+                $isSelected={paymentMethod === "CARD"}
+                onClick={() => setPaymentMethod("CARD")}
+              >
+                <span className="icon">💳</span>
+                <div className="title">카드결제</div>
+                <div className="description">신용카드/체크카드</div>
+              </PaymentMethodOption>
+
+              <PaymentMethodOption
+                $isSelected={paymentMethod === "TRANSFER"}
+                onClick={() => setPaymentMethod("TRANSFER")}
+              >
+                <span className="icon">🏦</span>
+                <div className="title">계좌이체</div>
+                <div className="description">실시간 계좌이체</div>
+              </PaymentMethodOption>
+            </PaymentMethodSection>
+          </Section>
+
+          {/* 배송 날짜/시간 */}
+          <Section
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             <SectionTitle>📅 배송 일시</SectionTitle>
+            <SectionSubTitle>
+              주말이나 공휴일은 문의 부탁드립니다.
+            </SectionSubTitle>
 
             <DateTimeSection>
               <FormGroup>
@@ -846,7 +991,13 @@ function CheckoutPageContent() {
               </TotalRow>
               <TotalRow>
                 <span>배송비</span>
-                <span>{deliveryFee.toLocaleString()}원</span>
+                <span>
+                  {deliveryFee === -1
+                    ? "배송불가"
+                    : deliveryFee === 0
+                    ? "무료"
+                    : `${deliveryFee.toLocaleString()}원`}
+                </span>
               </TotalRow>
               <TotalRow $isFinal>
                 <span>총 결제 금액</span>
@@ -854,20 +1005,25 @@ function CheckoutPageContent() {
               </TotalRow>
             </TotalSection>
             <InfoSetion>
-              <p>서울시 내 주문 시 배송비 3만원 </p>
-              <p>인천, 분당, 판교 주문 시 배송비 5만원</p>
-              <p>30만원 이상 주문 시 지역 관계없이 배송비 무료</p>
+              <p>• 서울 지역: 배송비 3만원</p>
+              <p>• 인천, 분당, 판교 지역: 배송비 5만원</p>
+              <p>• 30만원 이상 주문 시 배송비 무료</p>
+              <p>• 기타 지역은 배송 불가능</p>
             </InfoSetion>
 
             <CheckoutButton
               onClick={handleOrder}
-              whileHover={{ scale: isLoading ? 1 : 1.02 }}
-              whileTap={{ scale: isLoading ? 1 : 0.98 }}
-              disabled={isLoading}
+              whileHover={{ scale: isLoading || deliveryFee === -1 ? 1 : 1.02 }}
+              whileTap={{ scale: isLoading || deliveryFee === -1 ? 1 : 0.98 }}
+              disabled={isLoading || deliveryFee === -1}
               $isLoading={isLoading}
             >
               {isLoading && <LoadingSpinner />}
-              {isLoading ? "주문 중..." : "주문하기"}
+              {deliveryFee === -1
+                ? "배송 불가 지역"
+                : isLoading
+                ? "주문 중..."
+                : "주문하기"}
             </CheckoutButton>
           </OrderSummary>
         </RightSection>
