@@ -11,6 +11,8 @@ import Image from "next/image";
 
 interface CartItem extends MenuItem {
   quantity: number;
+  selectedSize?: 'Full' | 'Half';
+  selectedPrice?: number;
 }
 
 const Container = styled.div`
@@ -134,9 +136,52 @@ const MenuDescription = styled.p`
   margin-bottom: 15px;
 `;
 
+const PriceSection = styled.div`
+  margin-bottom: 15px;
+`;
+
+const SinglePrice = styled.p`
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: ${theme.colors.primary};
+  text-align: center;
+  margin-bottom: 10px;
+`;
+
+const SizeOptions = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+`;
+
+const SizeButton = styled.button<{ $isSelected: boolean }>`
+  flex: 1;
+  padding: 8px 16px;
+  border: 2px solid ${props => props.$isSelected ? theme.colors.primary : theme.colors.surface};
+  background: ${props => props.$isSelected ? theme.colors.primary : theme.colors.surface};
+  color: ${props => props.$isSelected ? 'white' : theme.colors.text.primary};
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all ${theme.transitions.fast};
+  font-weight: 600;
+  font-size: 0.9rem;
+  
+  &:hover {
+    border-color: ${theme.colors.primary};
+    background: ${props => props.$isSelected ? theme.colors.primary : `${theme.colors.primary}20`};
+  }
+`;
+
+const SizePrice = styled.div`
+  text-align: center;
+  font-size: 0.85rem;
+  color: ${theme.colors.text.secondary};
+  margin-top: 2px;
+`;
+
 const AddButton = styled(motion.button)`
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background: linear-gradient(
     135deg,
     ${theme.colors.primary} 0%,
@@ -150,6 +195,11 @@ const AddButton = styled(motion.button)`
 
   &:hover {
     transform: scale(1.02);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
 
@@ -192,6 +242,12 @@ const CartItemName = styled.p`
   font-weight: 600;
   color: ${theme.colors.text.primary};
   margin-bottom: 5px;
+`;
+
+const CartItemDetails = styled.div`
+  font-size: 0.85rem;
+  color: ${theme.colors.text.secondary};
+  margin-bottom: 3px;
 `;
 
 const CartItemPrice = styled.p`
@@ -292,26 +348,50 @@ export default function OrderPage() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState("sandwiches");
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<{[itemId: string]: 'Full' | 'Half'}>({});
 
-  const addToCart = (item: MenuItem) => {
+  const addToCart = (item: MenuItem, size?: 'Full' | 'Half') => {
+    const hasSizes = Array.isArray(item.size) && item.size.includes('Full') && item.size.includes('Half');
+    const selectedSize = size || (hasSizes ? 'Full' : undefined);
+    const selectedPrice = selectedSize === 'Half' && item.halfPrice ? item.halfPrice : item.price;
+    
+    const cartItemKey = hasSizes ? `${item.id}-${selectedSize}` : item.id;
+    
     setCart((prevCart) => {
-      const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
+      const existingItem = prevCart.find((cartItem) => 
+        hasSizes ? 
+        (cartItem.id === item.id && cartItem.selectedSize === selectedSize) :
+        cartItem.id === item.id
+      );
+      
       if (existingItem) {
         return prevCart.map((cartItem) =>
-          cartItem.id === item.id
+          (hasSizes ? 
+            (cartItem.id === item.id && cartItem.selectedSize === selectedSize) :
+            cartItem.id === item.id)
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         );
       }
-      return [...prevCart, { ...item, quantity: 1 }];
+      
+      return [...prevCart, { 
+        ...item, 
+        quantity: 1,
+        selectedSize,
+        selectedPrice
+      }];
     });
   };
 
-  const updateQuantity = (itemId: string, delta: number) => {
+  const updateQuantity = (cartItem: CartItem, delta: number) => {
     setCart((prevCart) => {
       return prevCart
         .map((item) => {
-          if (item.id === itemId) {
+          const isMatch = cartItem.selectedSize ? 
+            (item.id === cartItem.id && item.selectedSize === cartItem.selectedSize) :
+            item.id === cartItem.id;
+            
+          if (isMatch) {
             const newQuantity = item.quantity + delta;
             return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
           }
@@ -323,7 +403,7 @@ export default function OrderPage() {
 
   const calculateTotal = () => {
     return cart.reduce(
-      (total, item) => total + (item.price || 0) * item.quantity,
+      (total, item) => total + (item.selectedPrice || item.price || 0) * item.quantity,
       0
     );
   };
@@ -393,13 +473,52 @@ export default function OrderPage() {
                     {item.description && (
                       <MenuDescription>{item.description}</MenuDescription>
                     )}
-                    <AddButton
-                      onClick={() => addToCart(item)}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      담기 • {(item.price || 0).toLocaleString()}원
-                    </AddButton>
+                    
+                    {/* 사이즈 선택이 가능한 메뉴 */}
+                    {Array.isArray(item.size) && item.size.includes('Full') && item.size.includes('Half') && item.halfPrice ? (
+                      <>
+                        <SizeOptions>
+                          <SizeButton 
+                            $isSelected={selectedSizes[item.id] === 'Half' || (!selectedSizes[item.id])}
+                            onClick={() => setSelectedSizes(prev => ({ ...prev, [item.id]: 'Half' }))}
+                          >
+                            Half
+                            <SizePrice>{item.halfPrice.toLocaleString()}원</SizePrice>
+                          </SizeButton>
+                          <SizeButton 
+                            $isSelected={selectedSizes[item.id] === 'Full'}
+                            onClick={() => setSelectedSizes(prev => ({ ...prev, [item.id]: 'Full' }))}
+                          >
+                            Full
+                            <SizePrice>{item.price.toLocaleString()}원</SizePrice>
+                          </SizeButton>
+                        </SizeOptions>
+                        <AddButton
+                          onClick={() => {
+                            const selectedSize = selectedSizes[item.id] || 'Half';
+                            addToCart(item, selectedSize);
+                          }}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          담기 • {(selectedSizes[item.id] === 'Full' ? item.price : item.halfPrice).toLocaleString()}원
+                        </AddButton>
+                      </>
+                    ) : (
+                      /* 일반 메뉴 */
+                      <>
+                        <PriceSection>
+                          <SinglePrice>{(item.price || 0).toLocaleString()}원</SinglePrice>
+                        </PriceSection>
+                        <AddButton
+                          onClick={() => addToCart(item)}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          담기
+                        </AddButton>
+                      </>
+                    )}
                   </MenuContent>
                 </MenuCard>
               </motion.div>
@@ -429,19 +548,22 @@ export default function OrderPage() {
                   >
                     <CartItemInfo>
                       <CartItemName>{item.name}</CartItemName>
+                      {item.selectedSize && (
+                        <CartItemDetails>사이즈: {item.selectedSize}</CartItemDetails>
+                      )}
                       <CartItemPrice>
-                        {(item.price || 0).toLocaleString()}원
+                        {(item.selectedPrice || item.price || 0).toLocaleString()}원
                       </CartItemPrice>
                     </CartItemInfo>
                     <QuantityControl>
                       <QuantityButton
-                        onClick={() => updateQuantity(item.id, -1)}
+                        onClick={() => updateQuantity(item, -1)}
                       >
                         -
                       </QuantityButton>
                       <Quantity>{item.quantity}</Quantity>
                       <QuantityButton
-                        onClick={() => updateQuantity(item.id, 1)}
+                        onClick={() => updateQuantity(item, 1)}
                       >
                         +
                       </QuantityButton>

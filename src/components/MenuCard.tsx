@@ -78,9 +78,40 @@ const Description = styled.p`
   line-height: 1.6;
 `;
 
-const Price = styled.p`
+const PriceContainer = styled.div`
   margin-top: 15px;
+`;
+
+const Price = styled.p`
   font-size: 1.2rem;
+  font-weight: 600;
+  color: ${theme.colors.primary};
+  margin: 0;
+`;
+
+const SizePrice = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+`;
+
+const SizePriceItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+`;
+
+const SizeLabel = styled.span`
+  font-size: 0.9rem;
+  color: ${theme.colors.text.secondary};
+  margin-bottom: 2px;
+`;
+
+const SizePriceValue = styled.span`
+  font-size: 1.1rem;
   font-weight: 600;
   color: ${theme.colors.primary};
 `;
@@ -128,7 +159,22 @@ export default function MenuCard({ item, index = 0 }: MenuCardProps) {
       <Content>
         <Name>{item.name}</Name>
         {item.description && <Description>{item.description}</Description>}
-        {item.price && <Price>{item.price.toLocaleString()}원</Price>}
+        <PriceContainer>
+          {Array.isArray(item.size) && item.size.includes("Full") && item.size.includes("Half") && item.halfPrice ? (
+            <SizePrice>
+              <SizePriceItem>
+                <SizeLabel>Half</SizeLabel>
+                <SizePriceValue>{item.halfPrice.toLocaleString()}원</SizePriceValue>
+              </SizePriceItem>
+              <SizePriceItem>
+                <SizeLabel>Full</SizeLabel>
+                <SizePriceValue>{item.price.toLocaleString()}원</SizePriceValue>
+              </SizePriceItem>
+            </SizePrice>
+          ) : (
+            <Price>{item.price.toLocaleString()}원</Price>
+          )}
+        </PriceContainer>
       </Content>
     </Card>
   );
