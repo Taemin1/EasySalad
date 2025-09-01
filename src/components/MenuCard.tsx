@@ -160,7 +160,7 @@ export default function MenuCard({ item, index = 0 }: MenuCardProps) {
         <Name>{item.name}</Name>
         {item.description && <Description>{item.description}</Description>}
         <PriceContainer>
-          {Array.isArray(item.size) && item.size.includes("Full") && item.size.includes("Half") && item.halfPrice ? (
+          {item.size && Array.isArray(item.size) && item.size.includes("Full") && item.size.includes("Half") && item.halfPrice ? (
             <SizePrice>
               <SizePriceItem>
                 <SizeLabel>Half</SizeLabel>

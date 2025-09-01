@@ -351,7 +351,7 @@ export default function OrderPage() {
   const [selectedSizes, setSelectedSizes] = useState<{[itemId: string]: 'Full' | 'Half'}>({});
 
   const addToCart = (item: MenuItem, size?: 'Full' | 'Half') => {
-    const hasSizes = Array.isArray(item.size) && item.size.includes('Full') && item.size.includes('Half');
+    const hasSizes = item.size && Array.isArray(item.size) && item.size.includes('Full') && item.size.includes('Half');
     const selectedSize = size || (hasSizes ? 'Full' : undefined);
     const selectedPrice = selectedSize === 'Half' && item.halfPrice ? item.halfPrice : item.price;
     
@@ -474,7 +474,7 @@ export default function OrderPage() {
                     )}
                     
                     {/* 사이즈 선택이 가능한 메뉴 */}
-                    {Array.isArray(item.size) && item.size.includes('Full') && item.size.includes('Half') && item.halfPrice ? (
+                    {item.size && Array.isArray(item.size) && item.size.includes('Full') && item.size.includes('Half') && item.halfPrice ? (
                       <>
                         <SizeOptions>
                           <SizeButton 
