@@ -16,6 +16,8 @@ interface CartItem {
   quantity: number;
   image?: string;
   category: string;
+  selectedSize?: 'Full' | 'Half';
+  selectedPrice?: number;
 }
 
 interface DeliveryInfo {
@@ -227,6 +229,12 @@ const ItemName = styled.p`
   font-weight: 600;
   margin-bottom: 5px;
   color: ${theme.colors.text.primary};
+`;
+
+const ItemDetails = styled.p`
+  font-size: 0.85rem;
+  color: ${theme.colors.text.secondary};
+  margin-bottom: 3px;
 `;
 
 const ItemQuantity = styled.p`
@@ -515,7 +523,7 @@ function CheckoutPageContent() {
 
   const calculateSubtotal = () => {
     return cart.reduce(
-      (total, item) => total + (item.price || 0) * item.quantity,
+      (total, item) => total + (item.selectedPrice || item.price || 0) * item.quantity,
       0
     );
   };
@@ -972,14 +980,17 @@ function CheckoutPageContent() {
           <OrderSummary>
             <SectionTitle>📋 주문 요약</SectionTitle>
 
-            {cart.map((item) => (
-              <OrderItem key={item.id}>
+            {cart.map((item, index) => (
+              <OrderItem key={`${item.id}-${item.selectedSize || 'default'}-${index}`}>
                 <ItemInfo>
                   <ItemName>{item.name}</ItemName>
+                  {item.selectedSize && (
+                    <ItemDetails>사이즈: {item.selectedSize}</ItemDetails>
+                  )}
                   <ItemQuantity>{item.quantity}개</ItemQuantity>
                 </ItemInfo>
                 <ItemPrice>
-                  {((item.price || 0) * item.quantity).toLocaleString()}원
+                  {((item.selectedPrice || item.price || 0) * item.quantity).toLocaleString()}원
                 </ItemPrice>
               </OrderItem>
             ))}

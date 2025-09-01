@@ -3,8 +3,10 @@ export interface MenuItem {
   name: string;
   category: string;
   description?: string;
-  price?: number;
+  price: number;
+  halfPrice?: number;
   image?: string;
+  size?: string | string[];
   isNew?: boolean;
   isPopular?: boolean;
 }
