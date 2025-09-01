@@ -16,7 +16,7 @@ interface CartItem {
   quantity: number;
   image?: string;
   category: string;
-  selectedSize?: 'Full' | 'Half';
+  selectedSize?: "Full" | "Half";
   selectedPrice?: number;
 }
 
@@ -474,7 +474,7 @@ function CheckoutPageContent() {
   const addBusinessDays = (startDate: Date, businessDays: number): Date => {
     const result = new Date(startDate);
     let daysAdded = 0;
-    
+
     while (daysAdded < businessDays) {
       result.setDate(result.getDate() + 1);
       // 토요일(6), 일요일(0) 제외
@@ -482,7 +482,7 @@ function CheckoutPageContent() {
         daysAdded++;
       }
     }
-    
+
     return result;
   };
 
@@ -523,20 +523,18 @@ function CheckoutPageContent() {
 
   const calculateSubtotal = () => {
     return cart.reduce(
-      (total, item) => total + (item.selectedPrice || item.price || 0) * item.quantity,
+      (total, item) =>
+        total + (item.selectedPrice || item.price || 0) * item.quantity,
       0
     );
   };
 
   const getDeliveryFee = () => {
-    const subtotal = calculateSubtotal();
-
-    // 30만원 이상이면 무료배송
-    if (subtotal >= 300000) {
-      return 0;
-    }
-
     const address = deliveryInfo.address;
+
+    // 먼저 배송 가능 지역인지 확인
+    let isDeliverable = false;
+    let baseFee = 0;
 
     // 서울 지역 확인
     if (
@@ -544,11 +542,11 @@ function CheckoutPageContent() {
       address.includes("서울시") ||
       address.includes("서울특별시")
     ) {
-      return 30000;
+      isDeliverable = true;
+      baseFee = 30000;
     }
-
     // 인천, 분당, 판교 지역 확인
-    if (
+    else if (
       address.includes("인천") ||
       address.includes("인천시") ||
       address.includes("인천광역시") ||
@@ -556,11 +554,23 @@ function CheckoutPageContent() {
       (address.includes("판교") &&
         (address.includes("성남") || address.includes("경기")))
     ) {
-      return 50000;
+      isDeliverable = true;
+      baseFee = 50000;
     }
 
-    // 배송 불가 지역
-    return -1;
+    // 배송 불가 지역이면 -1 반환
+    if (!isDeliverable) {
+      return -1;
+    }
+
+    const subtotal = calculateSubtotal();
+
+    // 30만원 이상이면 무료배송
+    if (subtotal >= 0) {
+      return 0;
+    }
+
+    return baseFee;
   };
 
   const deliveryFee = getDeliveryFee();
@@ -981,7 +991,9 @@ function CheckoutPageContent() {
             <SectionTitle>📋 주문 요약</SectionTitle>
 
             {cart.map((item, index) => (
-              <OrderItem key={`${item.id}-${item.selectedSize || 'default'}-${index}`}>
+              <OrderItem
+                key={`${item.id}-${item.selectedSize || "default"}-${index}`}
+              >
                 <ItemInfo>
                   <ItemName>{item.name}</ItemName>
                   {item.selectedSize && (
@@ -990,7 +1002,10 @@ function CheckoutPageContent() {
                   <ItemQuantity>{item.quantity}개</ItemQuantity>
                 </ItemInfo>
                 <ItemPrice>
-                  {((item.selectedPrice || item.price || 0) * item.quantity).toLocaleString()}원
+                  {(
+                    (item.selectedPrice || item.price || 0) * item.quantity
+                  ).toLocaleString()}
+                  원
                 </ItemPrice>
               </OrderItem>
             ))}
