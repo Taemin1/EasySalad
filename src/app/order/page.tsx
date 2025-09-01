@@ -355,7 +355,6 @@ export default function OrderPage() {
     const selectedSize = size || (hasSizes ? 'Full' : undefined);
     const selectedPrice = selectedSize === 'Half' && item.halfPrice ? item.halfPrice : item.price;
     
-    const cartItemKey = hasSizes ? `${item.id}-${selectedSize}` : item.id;
     
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => 
