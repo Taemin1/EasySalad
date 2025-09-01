@@ -410,7 +410,7 @@ export default function ContactPage() {
             </InfoItem>
           </InfoCard>
 
-          <MapPlaceholder>문의 설명 영역</MapPlaceholder>
+          <MapPlaceholder></MapPlaceholder>
         </InfoSection>
       </ContentGrid>
     </Container>
