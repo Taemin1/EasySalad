@@ -664,7 +664,7 @@ function CheckoutPageContent() {
     setIsLoading(true);
 
     try {
-      // 1) 주문 생성
+      // 1) 주문 생성 (결제 전)
       const orderData = {
         items: cart,
         deliveryInfo,
@@ -688,12 +688,12 @@ function CheckoutPageContent() {
 
       const { order } = orderResult;
 
-      // 2) 결제
+      // 2) 결제 시도
       const paymentId = randomId();
 
       const payment = await PortOne.requestPayment({
         storeId: process.env.NEXT_PUBLIC_PORTONE_STORE_ID!,
-        channelKey: "channel-key-3f31cc3d-1af0-4a97-a0a2-4998f95b1be0",
+        channelKey: "channel-key-25ae06f8-95ed-4ebe-9a3b-bca3ff7f3086",
         paymentId,
         orderName: `ezySalad 주문 (${order.orderNumber})`,
         totalAmount: order.totalAmount,
@@ -712,12 +712,19 @@ function CheckoutPageContent() {
 
       const paymentResponse = payment as PaymentResponse;
       if (!payment || paymentResponse.code) {
+        // 결제 실패 시 주문을 취소 상태로 변경
+        await fetch(`/api/orders/${order.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "cancelled" }),
+        });
+        
         alert(paymentResponse?.message || "결제에 실패했습니다.");
         setIsLoading(false);
         return;
       }
 
-      // 3) 결제 검증
+      // 3) 결제 검증 및 주문 완료
       const verifyResponse = await fetch("/api/payments/complete", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -837,7 +844,7 @@ function CheckoutPageContent() {
             </FormGroup>
 
             <FormGroup>
-              <Label htmlFor="email">이메일 (선택)</Label>
+              <Label htmlFor="email">이메일 *</Label>
               <Input
                 id="email"
                 type="email"
@@ -849,16 +856,6 @@ function CheckoutPageContent() {
                 $hasError={!!errors.email}
               />
               {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
-              <span
-                style={{
-                  fontSize: "0.85rem",
-                  color: theme.colors.text.secondary,
-                  marginTop: "5px",
-                  display: "block",
-                }}
-              >
-                주문 확인 이메일을 받으시려면 입력해주세요.
-              </span>
             </FormGroup>
 
             <FormGroup>
