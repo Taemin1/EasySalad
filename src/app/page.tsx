@@ -67,8 +67,12 @@ const FeatureDescription = styled.p`
 `;
 
 const MenuPreview = styled.section`
-  padding: 2rem 6rem;
+  padding: 2rem 1.25rem;
   background-color: ${theme.colors.background};
+
+  @media (min-width: ${theme.breakpoints.tablet}) {
+    padding: 2rem 6rem;
+  }
 `;
 
 const SectionTitle = styled(motion.h2)`
