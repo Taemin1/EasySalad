@@ -398,7 +398,7 @@ export default function ContactPage() {
             </InfoItem>
             <InfoItem>
               <InfoIcon>📧</InfoIcon>
-              <span>info@easysalad.com</span>
+              <span>dog1733@daum.net</span>
             </InfoItem>
             <InfoItem>
               <InfoIcon>📍</InfoIcon>

@@ -82,9 +82,9 @@ export default function Footer() {
     <FooterContainer>
       <FooterContent>
         <FooterSection>
-          <FooterTitle>ezySalad</FooterTitle>
-          <ContactInfo>건강한 한 끼의 시작</ContactInfo>
-          <ContactInfo>신선한 재료로 만드는 프리미엄 샐러드</ContactInfo>
+          <FooterTitle>이지샐러드(ezysalad)</FooterTitle>
+          <ContactInfo>사업자 등록번호 | 872-06-00727</ContactInfo>
+          <ContactInfo>대표자 | 임장호</ContactInfo>
           <SocialLinks>
             <SocialLink href="#" aria-label="Instagram">
               📷
@@ -104,7 +104,6 @@ export default function Footer() {
             <FooterLink href="/menu">메뉴</FooterLink>
             <FooterLink href="/about">회사 소개</FooterLink>
             <FooterLink href="/contact">문의하기</FooterLink>
-            <FooterLink href="/catering">케이터링</FooterLink>
           </FooterLinks>
         </FooterSection>
 
@@ -116,8 +115,8 @@ export default function Footer() {
 
         <FooterSection>
           <FooterTitle>문의</FooterTitle>
-          <ContactInfo>📞 02-1234-5678</ContactInfo>
-          <ContactInfo>📧 info@easysalad.com</ContactInfo>
+          <ContactInfo>📞 02-6031-8927</ContactInfo>
+          <ContactInfo>📧 dog1733@daum.net</ContactInfo>
           <ContactInfo>
             📍 서울 중구 남대문로9길 40 215호(복도 맨 끝)
           </ContactInfo>
