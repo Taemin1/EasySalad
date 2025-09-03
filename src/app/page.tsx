@@ -93,22 +93,43 @@ export default function Home() {
         <Image src="/no-sugar.png" alt="No Sugar" width={80} height={80} />
       ),
       title: "No Sugar로 건강하게",
-      description:
-        "보다 건강하고 가치있는 샐러드를 제공하기 위해 토핑과 드레싱에 설탕을 사용하지 않았습니다.",
+      description: (
+        <>
+          보다 건강하고 가치있는 샐러드를 제공하기
+          <br />
+          위해 토핑과 드레싱에 설탕을
+          <br />
+          사용하지 않았습니다.
+        </>
+      ),
     },
     {
       image: <Image src="/no-time.png" alt="No Time" width={80} height={80} />,
       title: "바로 만들어서 간편하게",
-      description:
-        "주문 즉시 매장에서 바로 만들어주는 시스템으로 신선한 샐러드를 빠르고 간편하게 즐길 수 있습니다.",
+      description: (
+        <>
+          주문 즉시 매장에서 바로 만들어주는
+          <br />
+          시스템으로 신선한 샐러드를 빠르고 간편하게
+          <br />
+          즐길 수 있습니다.
+        </>
+      ),
     },
     {
       image: (
         <Image src="/no-money.png" alt="No Money" width={80} height={80} />
       ),
       title: "합리적인 가격으로 부담없이",
-      description:
-        "좋은 재료로 건강하고 맛있는 샐러드를 만들고 가장 합리적인 가격으로 내놓기 위해 노력합니다.",
+      description: (
+        <>
+          좋은 재료로 건강하고 맛있는 샐러드를
+          <br />
+          만들고 가장 합리적인 가격으로 내놓기 위해
+          <br />
+          노력합니다.
+        </>
+      ),
     },
   ];
 
