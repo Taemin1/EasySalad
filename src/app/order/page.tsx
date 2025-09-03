@@ -279,10 +279,31 @@ const QuantityButton = styled.button`
   }
 `;
 
-const Quantity = styled.span`
-  font-weight: 600;
-  min-width: 20px;
+const QuantityInput = styled.input`
+  width: 50px;
+  height: 30px;
   text-align: center;
+  font-weight: 600;
+  border: 1px solid ${theme.colors.background};
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background-color: ${theme.colors.surface};
+  
+  &:focus {
+    outline: none;
+    border-color: ${theme.colors.primary};
+  }
+  
+  /* 숫자 입력 스피너 제거 */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
 `;
 
 const CartEmpty = styled.p`
@@ -397,6 +418,24 @@ export default function OrderPage() {
           return item;
         })
         .filter(Boolean) as CartItem[];
+    });
+  };
+
+  const setQuantity = (cartItem: CartItem, quantity: number) => {
+    if (quantity < 1) return;
+    
+    setCart((prevCart) => {
+      return prevCart
+        .map((item) => {
+          const isMatch = cartItem.selectedSize ? 
+            (item.id === cartItem.id && item.selectedSize === cartItem.selectedSize) :
+            item.id === cartItem.id;
+            
+          if (isMatch) {
+            return { ...item, quantity };
+          }
+          return item;
+        });
     });
   };
 
@@ -560,7 +599,23 @@ export default function OrderPage() {
                       >
                         -
                       </QuantityButton>
-                      <Quantity>{item.quantity}</Quantity>
+                      <QuantityInput
+                        type="number"
+                        value={item.quantity}
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value);
+                          if (!isNaN(value) && value > 0) {
+                            setQuantity(item, value);
+                          }
+                        }}
+                        onBlur={(e) => {
+                          const value = parseInt(e.target.value);
+                          if (isNaN(value) || value < 1) {
+                            setQuantity(item, 1);
+                          }
+                        }}
+                        min="1"
+                      />
                       <QuantityButton
                         onClick={() => updateQuantity(item, 1)}
                       >
