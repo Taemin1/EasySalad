@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { theme } from "@/styles/theme";
 import { supabase } from "@/../lib/supabase";
+import { User } from "@supabase/supabase-js";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -143,7 +144,7 @@ const LoadingSpinner = styled.div`
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
