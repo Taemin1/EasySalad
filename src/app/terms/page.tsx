@@ -32,6 +32,8 @@ const Content = styled.div`
   line-height: 1.7;
   color: ${theme.colors.text.secondary};
   margin-bottom: 20px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 
   p {
     margin-bottom: 16px;
