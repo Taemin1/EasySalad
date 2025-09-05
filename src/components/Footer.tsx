@@ -48,28 +48,6 @@ const ContactInfo = styled.p`
   opacity: 0.8;
 `;
 
-const SocialLinks = styled.div`
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-`;
-
-const SocialLink = styled.a`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all ${theme.transitions.fast};
-
-  &:hover {
-    background-color: ${theme.colors.primary};
-    transform: translateY(-2px);
-  }
-`;
-
 const Copyright = styled.div`
   text-align: center;
   padding-top: 20px;
@@ -85,17 +63,6 @@ export default function Footer() {
           <FooterTitle>이지샐러드(ezysalad)</FooterTitle>
           <ContactInfo>사업자 등록번호 | 872-06-00727</ContactInfo>
           <ContactInfo>대표자 | 임장호</ContactInfo>
-          <SocialLinks>
-            <SocialLink href="#" aria-label="Instagram">
-              📷
-            </SocialLink>
-            <SocialLink href="#" aria-label="Facebook">
-              📘
-            </SocialLink>
-            <SocialLink href="#" aria-label="Blog">
-              📝
-            </SocialLink>
-          </SocialLinks>
         </FooterSection>
 
         <FooterSection>
@@ -104,6 +71,7 @@ export default function Footer() {
             <FooterLink href="/menu">메뉴</FooterLink>
             <FooterLink href="/about">회사 소개</FooterLink>
             <FooterLink href="/contact">문의하기</FooterLink>
+            <FooterLink href="/terms">교환 및 환불 규정</FooterLink>
           </FooterLinks>
         </FooterSection>
 
