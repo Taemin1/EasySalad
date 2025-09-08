@@ -77,8 +77,8 @@ export default function Footer() {
 
         <FooterSection>
           <FooterTitle>영업 시간</FooterTitle>
-          <ContactInfo>월-금: 08:00 - 20:00</ContactInfo>
-          <ContactInfo>토, 일: 휴무</ContactInfo>
+          <ContactInfo>월-금: 08:30 - 20:00</ContactInfo>
+          <ContactInfo>토, 일: 상황에 따라 오픈</ContactInfo>
         </FooterSection>
 
         <FooterSection>

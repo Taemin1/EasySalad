@@ -406,7 +406,7 @@ export default function ContactPage() {
             </InfoItem>
             <InfoItem>
               <InfoIcon>⏰</InfoIcon>
-              <span>월-금: 06:30 - 20:30</span>
+              <span>월-금: 08:30 - 20:30</span>
             </InfoItem>
           </InfoCard>
 
