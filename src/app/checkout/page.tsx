@@ -471,29 +471,17 @@ function CheckoutPageContent() {
     }
   }, []);
 
-  const addBusinessDays = (startDate: Date, businessDays: number): Date => {
-    const result = new Date(startDate);
-    let daysAdded = 0;
-
-    while (daysAdded < businessDays) {
-      result.setDate(result.getDate() + 1);
-      // 토요일(6), 일요일(0) 제외
-      if (result.getDay() !== 0 && result.getDay() !== 6) {
-        daysAdded++;
-      }
-    }
-
-    return result;
-  };
-
   const getMinDate = () => {
     const today = new Date();
-    const minDate = addBusinessDays(today, 2);
+    const minDate = new Date(today);
+    minDate.setDate(today.getDate() + 2);
     return minDate.toISOString().split("T")[0];
   };
 
   const timeOptions = [
     { value: "", label: "시간을 선택해주세요" },
+    { value: "07:00-08:00", label: "오전 7시 - 8시" },
+    { value: "08:00-09:00", label: "오전 8시 - 9시" },
     { value: "09:00-10:00", label: "오전 9시 - 10시" },
     { value: "10:00-11:00", label: "오전 10시 - 11시" },
     { value: "11:00-12:00", label: "오전 11시 - 12시" },
@@ -636,13 +624,15 @@ function CheckoutPageContent() {
       newErrors.deliveryDate = "배송 날짜를 선택해주세요.";
     } else {
       const deliveryDate = new Date(deliveryInfo.deliveryDate);
-      const minDate = addBusinessDays(new Date(), 2);
+      const today = new Date();
+      const minDate = new Date(today);
+      minDate.setDate(today.getDate() + 2);
       minDate.setHours(0, 0, 0, 0);
       deliveryDate.setHours(0, 0, 0, 0);
 
       if (deliveryDate < minDate) {
         newErrors.deliveryDate =
-          "배송일은 주문일 기준 영업일 2일 후부터 선택 가능합니다. (주말 제외)";
+          "배송일은 주문일 기준 2일 후부터 선택 가능합니다.";
       }
     }
 
@@ -718,7 +708,7 @@ function CheckoutPageContent() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ status: "cancelled" }),
         });
-        
+
         alert(paymentResponse?.message || "결제에 실패했습니다.");
         setIsLoading(false);
         return;

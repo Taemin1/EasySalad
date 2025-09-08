@@ -89,9 +89,11 @@ export default function TermsPage() {
       <Section>
         <SectionTitle>3. 신청 방법</SectionTitle>
         <Content>
-          <p>고객센터(전화·이메일·카카오톡 등)를 통해 접수</p>
-          <p>주문번호, 문제 상황 사진을 반드시 첨부</p>
-          <p>확인 후 환불(결제취소/계좌 환불) 또는 재배송으로 처리</p>
+          <ul>
+            <li>고객센터(전화·이메일·카카오톡 등)를 통해 접수</li>
+            <li>주문번호, 문제 상황 사진을 반드시 첨부</li>
+            <li>확인 후 환불(결제취소/계좌 환불) 또는 재배송으로 처리</li>
+          </ul>
         </Content>
       </Section>
 
@@ -115,11 +117,13 @@ export default function TermsPage() {
       <Section>
         <SectionTitle>5. 주문 취소</SectionTitle>
         <Content>
-          <p>
-            30분 이내라면 주문 후 빠르게 취소가 가능하지만, 출고 단계로 넘어간
-            경우에는 취소가 불가합니다. 수령 후 하자가 있는 경우에만 교환·환불
-            절차를 진행할 수 있습니다.
-          </p>
+          <ul>
+            <li>
+              30분 이내라면 주문 후 빠르게 취소가 가능하지만, 출고 단계로 넘어간
+              경우에는 취소가 불가합니다. 수령 후 하자가 있는 경우에만 교환·환불
+              절차를 진행할 수 있습니다.
+            </li>
+          </ul>
         </Content>
       </Section>
 
