@@ -647,7 +647,6 @@ export default function AdminDashboard() {
         size: formData.size.length > 0 ? formData.size : null,
       };
 
-      console.log("Submitting menu data:", JSON.stringify(menuData, null, 2));
 
       const url = editingMenu
         ? `/api/admin/menus/${editingMenu.id}`
@@ -655,8 +654,6 @@ export default function AdminDashboard() {
 
       const method = editingMenu ? "PUT" : "POST";
 
-      console.log("Request URL:", url);
-      console.log("Request method:", method);
 
       const response = await fetch(url, {
         method,
@@ -666,14 +663,7 @@ export default function AdminDashboard() {
         body: JSON.stringify(menuData),
       });
 
-      console.log("Response status:", response.status);
-      console.log(
-        "Response headers:",
-        Object.fromEntries(response.headers.entries())
-      );
-
       const result = await response.json();
-      console.log("Response body:", JSON.stringify(result, null, 2));
 
       if (response.ok) {
         setShowModal(false);
@@ -686,7 +676,6 @@ export default function AdminDashboard() {
           ? `${result.error} (${result.details})`
           : result.error;
         alert(`실패: ${errorMsg}`);
-        console.error("API Error:", result);
       }
     } catch (error) {
       console.error("Error submitting menu:", error);
