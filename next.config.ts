@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     emotion: true,
   },
   images: {
-    domains: ["https://msnpctknnynaeoaujccp.supabase.co"],
+    domains: ["msnpctknnynaeoaujccp.supabase.co"],
   },
   webpack: (config, { isServer }) => {
     // 클라이언트 사이드에서만 포트원 SDK 로드

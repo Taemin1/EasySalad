@@ -11,7 +11,7 @@ import Image from "next/image";
 
 interface CartItem extends MenuItem {
   quantity: number;
-  selectedSize?: 'Full' | 'Half';
+  selectedSize?: "Full" | "Half";
   selectedPrice?: number;
 }
 
@@ -157,18 +157,23 @@ const SizeOptions = styled.div`
 const SizeButton = styled.button<{ $isSelected: boolean }>`
   flex: 1;
   padding: 8px 16px;
-  border: 2px solid ${props => props.$isSelected ? theme.colors.primary : theme.colors.surface};
-  background: ${props => props.$isSelected ? theme.colors.primary : theme.colors.surface};
-  color: ${props => props.$isSelected ? 'white' : theme.colors.text.primary};
+  border: 2px solid
+    ${(props) =>
+      props.$isSelected ? theme.colors.primary : theme.colors.surface};
+  background: ${(props) =>
+    props.$isSelected ? theme.colors.primary : theme.colors.surface};
+  color: ${(props) =>
+    props.$isSelected ? "white" : theme.colors.text.primary};
   border-radius: 8px;
   cursor: pointer;
   transition: all ${theme.transitions.fast};
   font-weight: 600;
   font-size: 0.9rem;
-  
+
   &:hover {
     border-color: ${theme.colors.primary};
-    background: ${props => props.$isSelected ? theme.colors.primary : `${theme.colors.primary}20`};
+    background: ${(props) =>
+      props.$isSelected ? theme.colors.primary : `${theme.colors.primary}20`};
   }
 `;
 
@@ -196,7 +201,7 @@ const AddButton = styled(motion.button)`
   &:hover {
     transform: scale(1.02);
   }
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -288,21 +293,17 @@ const QuantityInput = styled.input`
   border-radius: 4px;
   font-size: 0.9rem;
   background-color: ${theme.colors.surface};
-  
+
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
   }
-  
+
   /* 숫자 입력 스피너 제거 */
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
-  }
-  
-  &[type=number] {
-    -moz-appearance: textfield;
   }
 `;
 
@@ -369,7 +370,9 @@ export default function OrderPage() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState("sandwiches");
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<{[itemId: string]: 'Full' | 'Half'}>({});
+  const [selectedSizes, setSelectedSizes] = useState<{
+    [itemId: string]: "Full" | "Half";
+  }>({});
   const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -392,35 +395,45 @@ export default function OrderPage() {
     fetchMenuData();
   }, []);
 
-  const addToCart = (item: MenuItem, size?: 'Full' | 'Half') => {
-    const hasSizes = item.size && Array.isArray(item.size) && item.size.includes('Full') && item.size.includes('Half');
-    const selectedSize = size || (hasSizes ? 'Full' : undefined);
-    const selectedPrice = selectedSize === 'Half' && item.halfPrice ? item.halfPrice : item.price;
-    
-    
+  const addToCart = (item: MenuItem, size?: "Full" | "Half") => {
+    const hasSizes =
+      item.size &&
+      Array.isArray(item.size) &&
+      item.size.includes("Full") &&
+      item.size.includes("Half");
+    const selectedSize = size || (hasSizes ? "Full" : undefined);
+    const selectedPrice =
+      selectedSize === "Half" && item.halfPrice ? item.halfPrice : item.price;
+
     setCart((prevCart) => {
-      const existingItem = prevCart.find((cartItem) => 
-        hasSizes ? 
-        (cartItem.id === item.id && cartItem.selectedSize === selectedSize) :
-        cartItem.id === item.id
+      const existingItem = prevCart.find((cartItem) =>
+        hasSizes
+          ? cartItem.id === item.id && cartItem.selectedSize === selectedSize
+          : cartItem.id === item.id
       );
-      
+
       if (existingItem) {
         return prevCart.map((cartItem) =>
-          (hasSizes ? 
-            (cartItem.id === item.id && cartItem.selectedSize === selectedSize) :
-            cartItem.id === item.id)
+          (
+            hasSizes
+              ? cartItem.id === item.id &&
+                cartItem.selectedSize === selectedSize
+              : cartItem.id === item.id
+          )
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         );
       }
-      
-      return [...prevCart, { 
-        ...item, 
-        quantity: 1,
-        selectedSize,
-        selectedPrice
-      }];
+
+      return [
+        ...prevCart,
+        {
+          ...item,
+          quantity: 1,
+          selectedSize,
+          selectedPrice,
+        },
+      ];
     });
   };
 
@@ -428,10 +441,11 @@ export default function OrderPage() {
     setCart((prevCart) => {
       return prevCart
         .map((item) => {
-          const isMatch = cartItem.selectedSize ? 
-            (item.id === cartItem.id && item.selectedSize === cartItem.selectedSize) :
-            item.id === cartItem.id;
-            
+          const isMatch = cartItem.selectedSize
+            ? item.id === cartItem.id &&
+              item.selectedSize === cartItem.selectedSize
+            : item.id === cartItem.id;
+
           if (isMatch) {
             const newQuantity = item.quantity + delta;
             return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
@@ -444,40 +458,43 @@ export default function OrderPage() {
 
   const setQuantity = (cartItem: CartItem, quantity: number) => {
     if (quantity < 1) return;
-    
+
     setCart((prevCart) => {
-      return prevCart
-        .map((item) => {
-          const isMatch = cartItem.selectedSize ? 
-            (item.id === cartItem.id && item.selectedSize === cartItem.selectedSize) :
-            item.id === cartItem.id;
-            
-          if (isMatch) {
-            return { ...item, quantity };
-          }
-          return item;
-        });
+      return prevCart.map((item) => {
+        const isMatch = cartItem.selectedSize
+          ? item.id === cartItem.id &&
+            item.selectedSize === cartItem.selectedSize
+          : item.id === cartItem.id;
+
+        if (isMatch) {
+          return { ...item, quantity };
+        }
+        return item;
+      });
     });
   };
 
   const calculateTotal = () => {
     return cart.reduce(
-      (total, item) => total + (item.selectedPrice || item.price || 0) * item.quantity,
+      (total, item) =>
+        total + (item.selectedPrice || item.price || 0) * item.quantity,
       0
     );
   };
 
   const handleCheckout = () => {
     if (cart.length === 0) return;
-    
+
     // 장바구니 데이터를 localStorage에 저장
-    localStorage.setItem('cart', JSON.stringify(cart));
-    
+    localStorage.setItem("cart", JSON.stringify(cart));
+
     // 결제 페이지로 이동
-    router.push('/checkout');
+    router.push("/checkout");
   };
 
-  const currentCategory = menuCategories.find((cat) => cat.id === selectedCategory);
+  const currentCategory = menuCategories.find(
+    (cat) => cat.id === selectedCategory
+  );
   const currentItems = currentCategory?.items || [];
 
   return (
@@ -508,86 +525,121 @@ export default function OrderPage() {
 
           <MenuGrid>
             {loading ? (
-              <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "60px 0" }}>
+              <div
+                style={{
+                  gridColumn: "1 / -1",
+                  textAlign: "center",
+                  padding: "60px 0",
+                }}
+              >
                 메뉴를 불러오는 중...
               </div>
             ) : (
               currentItems.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <MenuCard>
-                  <ImageContainer>
-                    {item.image ? (
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        style={{ objectFit: "cover" }}
-                      />
-                    ) : (
-                      <PlaceholderIcon>
-                        {getEmoji(item.category)}
-                      </PlaceholderIcon>
-                    )}
-                  </ImageContainer>
-                  <MenuContent>
-                    <MenuName>{item.name}</MenuName>
-                    {item.description && (
-                      <MenuDescription>{item.description}</MenuDescription>
-                    )}
-                    
-                    {/* 사이즈 선택이 가능한 메뉴 */}
-                    {item.size && Array.isArray(item.size) && item.size.includes('Full') && item.size.includes('Half') && item.halfPrice ? (
-                      <>
-                        <SizeOptions>
-                          <SizeButton 
-                            $isSelected={selectedSizes[item.id] === 'Half' || (!selectedSizes[item.id])}
-                            onClick={() => setSelectedSizes(prev => ({ ...prev, [item.id]: 'Half' }))}
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <MenuCard>
+                    <ImageContainer>
+                      {item.image ? (
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          style={{ objectFit: "cover" }}
+                        />
+                      ) : (
+                        <PlaceholderIcon>
+                          {getEmoji(item.category)}
+                        </PlaceholderIcon>
+                      )}
+                    </ImageContainer>
+                    <MenuContent>
+                      <MenuName>{item.name}</MenuName>
+                      {item.description && (
+                        <MenuDescription>{item.description}</MenuDescription>
+                      )}
+
+                      {/* 사이즈 선택이 가능한 메뉴 */}
+                      {item.size &&
+                      Array.isArray(item.size) &&
+                      item.size.includes("Full") &&
+                      item.size.includes("Half") &&
+                      item.halfPrice ? (
+                        <>
+                          <SizeOptions>
+                            <SizeButton
+                              $isSelected={
+                                selectedSizes[item.id] === "Half" ||
+                                !selectedSizes[item.id]
+                              }
+                              onClick={() =>
+                                setSelectedSizes((prev) => ({
+                                  ...prev,
+                                  [item.id]: "Half",
+                                }))
+                              }
+                            >
+                              Half
+                              <SizePrice>
+                                {item.halfPrice.toLocaleString()}원
+                              </SizePrice>
+                            </SizeButton>
+                            <SizeButton
+                              $isSelected={selectedSizes[item.id] === "Full"}
+                              onClick={() =>
+                                setSelectedSizes((prev) => ({
+                                  ...prev,
+                                  [item.id]: "Full",
+                                }))
+                              }
+                            >
+                              Full
+                              <SizePrice>
+                                {item.price.toLocaleString()}원
+                              </SizePrice>
+                            </SizeButton>
+                          </SizeOptions>
+                          <AddButton
+                            onClick={() => {
+                              const selectedSize =
+                                selectedSizes[item.id] || "Half";
+                              addToCart(item, selectedSize);
+                            }}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                           >
-                            Half
-                            <SizePrice>{item.halfPrice.toLocaleString()}원</SizePrice>
-                          </SizeButton>
-                          <SizeButton 
-                            $isSelected={selectedSizes[item.id] === 'Full'}
-                            onClick={() => setSelectedSizes(prev => ({ ...prev, [item.id]: 'Full' }))}
+                            담기 •{" "}
+                            {(selectedSizes[item.id] === "Full"
+                              ? item.price
+                              : item.halfPrice
+                            ).toLocaleString()}
+                            원
+                          </AddButton>
+                        </>
+                      ) : (
+                        /* 일반 메뉴 */
+                        <>
+                          <PriceSection>
+                            <SinglePrice>
+                              {(item.price || 0).toLocaleString()}원
+                            </SinglePrice>
+                          </PriceSection>
+                          <AddButton
+                            onClick={() => addToCart(item)}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                           >
-                            Full
-                            <SizePrice>{item.price.toLocaleString()}원</SizePrice>
-                          </SizeButton>
-                        </SizeOptions>
-                        <AddButton
-                          onClick={() => {
-                            const selectedSize = selectedSizes[item.id] || 'Half';
-                            addToCart(item, selectedSize);
-                          }}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          담기 • {(selectedSizes[item.id] === 'Full' ? item.price : item.halfPrice).toLocaleString()}원
-                        </AddButton>
-                      </>
-                    ) : (
-                      /* 일반 메뉴 */
-                      <>
-                        <PriceSection>
-                          <SinglePrice>{(item.price || 0).toLocaleString()}원</SinglePrice>
-                        </PriceSection>
-                        <AddButton
-                          onClick={() => addToCart(item)}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          담기
-                        </AddButton>
-                      </>
-                    )}
-                  </MenuContent>
-                </MenuCard>
-              </motion.div>
+                            담기
+                          </AddButton>
+                        </>
+                      )}
+                    </MenuContent>
+                  </MenuCard>
+                </motion.div>
               ))
             )}
           </MenuGrid>
@@ -616,16 +668,21 @@ export default function OrderPage() {
                     <CartItemInfo>
                       <CartItemName>{item.name}</CartItemName>
                       {item.selectedSize && (
-                        <CartItemDetails>사이즈: {item.selectedSize}</CartItemDetails>
+                        <CartItemDetails>
+                          사이즈: {item.selectedSize}
+                        </CartItemDetails>
                       )}
                       <CartItemPrice>
-                        {(item.selectedPrice || item.price || 0).toLocaleString()}원
+                        {(
+                          item.selectedPrice ||
+                          item.price ||
+                          0
+                        ).toLocaleString()}
+                        원
                       </CartItemPrice>
                     </CartItemInfo>
                     <QuantityControl>
-                      <QuantityButton
-                        onClick={() => updateQuantity(item, -1)}
-                      >
+                      <QuantityButton onClick={() => updateQuantity(item, -1)}>
                         -
                       </QuantityButton>
                       <QuantityInput
@@ -645,9 +702,7 @@ export default function OrderPage() {
                         }}
                         min="1"
                       />
-                      <QuantityButton
-                        onClick={() => updateQuantity(item, 1)}
-                      >
+                      <QuantityButton onClick={() => updateQuantity(item, 1)}>
                         +
                       </QuantityButton>
                     </QuantityControl>
