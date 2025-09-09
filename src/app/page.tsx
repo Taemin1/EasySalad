@@ -1,10 +1,12 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import Hero from "@/components/Hero";
 import CategorySection from "@/components/CategorySection";
-import { menuData } from "@/data/menuData";
+import { getMenuByCategories } from "@/lib/menu";
+import { MenuCategory } from "@/types/menu";
 import { theme } from "@/styles/theme";
 import Image from "next/image";
 
@@ -87,6 +89,24 @@ const SectionTitle = styled(motion.h2)`
 `;
 
 export default function Home() {
+  const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMenuData = async () => {
+      try {
+        const categories = await getMenuByCategories();
+        setMenuCategories(categories);
+      } catch (error) {
+        console.error("Error fetching menu data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMenuData();
+  }, []);
+
   const features = [
     {
       image: (
@@ -133,7 +153,7 @@ export default function Home() {
     },
   ];
 
-  const featuredCategories = menuData.slice(0, 3);
+  const featuredCategories = menuCategories.slice(0, 3);
 
   return (
     <Container>
@@ -165,13 +185,19 @@ export default function Home() {
           인기 메뉴
         </SectionTitle>
 
-        {featuredCategories.map((category, index) => (
-          <CategorySection
-            key={category.id}
-            category={category}
-            delay={index * 0.2}
-          />
-        ))}
+        {loading ? (
+          <div style={{ textAlign: "center", padding: "60px 0" }}>
+            메뉴를 불러오는 중...
+          </div>
+        ) : (
+          featuredCategories.map((category, index) => (
+            <CategorySection
+              key={category.id}
+              category={category}
+              delay={index * 0.2}
+            />
+          ))
+        )}
       </MenuPreview>
     </Container>
   );

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "@/styles/theme";
-import { menuData } from "@/data/menuData";
-import { MenuItem } from "@/types/menu";
+import { getMenuByCategories } from "@/lib/menu";
+import { MenuItem, MenuCategory } from "@/types/menu";
 import Image from "next/image";
 
 interface CartItem extends MenuItem {
@@ -370,6 +370,27 @@ export default function OrderPage() {
   const [selectedCategory, setSelectedCategory] = useState("sandwiches");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<{[itemId: string]: 'Full' | 'Half'}>({});
+  const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMenuData = async () => {
+      try {
+        const categories = await getMenuByCategories();
+        setMenuCategories(categories);
+        // 첫 번째 카테고리를 기본으로 설정
+        if (categories.length > 0) {
+          setSelectedCategory(categories[0].id);
+        }
+      } catch (error) {
+        console.error("Error fetching menu data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMenuData();
+  }, []);
 
   const addToCart = (item: MenuItem, size?: 'Full' | 'Half') => {
     const hasSizes = item.size && Array.isArray(item.size) && item.size.includes('Full') && item.size.includes('Half');
@@ -456,7 +477,7 @@ export default function OrderPage() {
     router.push('/checkout');
   };
 
-  const currentCategory = menuData.find((cat) => cat.id === selectedCategory);
+  const currentCategory = menuCategories.find((cat) => cat.id === selectedCategory);
   const currentItems = currentCategory?.items || [];
 
   return (
@@ -471,20 +492,27 @@ export default function OrderPage() {
 
       <ContentWrapper>
         <MenuSection>
-          <CategoryTabs>
-            {menuData.map((category) => (
-              <CategoryTab
-                key={category.id}
-                $isActive={selectedCategory === category.id}
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                {category.name}
-              </CategoryTab>
-            ))}
-          </CategoryTabs>
+          {!loading && (
+            <CategoryTabs>
+              {menuCategories.map((category) => (
+                <CategoryTab
+                  key={category.id}
+                  $isActive={selectedCategory === category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                >
+                  {category.name}
+                </CategoryTab>
+              ))}
+            </CategoryTabs>
+          )}
 
           <MenuGrid>
-            {currentItems.map((item, index) => (
+            {loading ? (
+              <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "60px 0" }}>
+                메뉴를 불러오는 중...
+              </div>
+            ) : (
+              currentItems.map((item, index) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -560,7 +588,8 @@ export default function OrderPage() {
                   </MenuContent>
                 </MenuCard>
               </motion.div>
-            ))}
+              ))
+            )}
           </MenuGrid>
         </MenuSection>
 
