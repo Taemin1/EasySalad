@@ -28,15 +28,10 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("POST request received for new menu");
-    
     const body = await request.json();
-    console.log("Request body:", JSON.stringify(body, null, 2));
-    
     const { name, category, description, price, half_price, image, size } = body;
 
     if (!name || !category || !price) {
-      console.log("Missing required fields:", { name: !!name, category: !!category, price: !!price });
       return NextResponse.json(
         { error: "필수 필드가 누락되었습니다." },
         { status: 400 }
@@ -55,30 +50,25 @@ export async function POST(request: NextRequest) {
       is_available: true,
     };
 
-    console.log("Insert data:", JSON.stringify(insertData, null, 2));
-
     const { data, error } = await supabase
       .from("menus")
       .insert(insertData)
       .select()
       .single();
 
-    console.log("Supabase insert result:", { data, error });
-
     if (error) {
       console.error("Supabase insert error:", error);
       return NextResponse.json(
-        { error: "메뉴 추가에 실패했습니다.", details: error.message },
+        { error: "메뉴 추가에 실패했습니다." },
         { status: 500 }
       );
     }
 
-    console.log("Menu insert successful:", data);
     return NextResponse.json({ data }, { status: 201 });
   } catch (error) {
     console.error("POST menu error:", error);
     return NextResponse.json(
-      { error: "서버 오류가 발생했습니다.", details: error instanceof Error ? error.message : String(error) },
+      { error: "서버 오류가 발생했습니다." },
       { status: 500 }
     );
   }
