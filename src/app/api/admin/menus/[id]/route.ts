@@ -8,7 +8,16 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { name, category, description, price, half_price, image, size, is_available } = body;
+    const {
+      name,
+      category,
+      description,
+      price,
+      half_price,
+      image,
+      size,
+      is_available,
+    } = body;
 
     if (!name || !category || !price) {
       return NextResponse.json(
@@ -23,13 +32,13 @@ export async function PUT(
       description: description || null,
       price: Number(price),
       half_price: half_price ? Number(half_price) : null,
-      image: image || null,  // image 컬럼 사용
+      image: image || null, // image 컬럼 사용
       size: size || null,
       is_available: is_available !== undefined ? is_available : true,
     };
 
     // 먼저 해당 메뉴가 존재하는지 확인
-    const { data: existingMenu, error: checkError } = await supabase
+    const { error: checkError } = await supabase
       .from("menus")
       .select("*")
       .eq("id", id)
@@ -83,10 +92,7 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    const { error } = await supabase
-      .from("menus")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("menus").delete().eq("id", id);
 
     if (error) {
       return NextResponse.json(
