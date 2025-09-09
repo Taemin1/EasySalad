@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
-import { menuData } from "@/data/menuData";
+import { getMenuByCategories } from "@/lib/menu";
+import { MenuCategory } from "@/types/menu";
 import MenuCard from "@/components/MenuCard";
 import { theme } from "@/styles/theme";
 
@@ -73,11 +74,28 @@ const NoItemsMessage = styled.p`
 
 export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMenuData = async () => {
+      try {
+        const categories = await getMenuByCategories();
+        setMenuCategories(categories);
+      } catch (error) {
+        console.error("Error fetching menu data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMenuData();
+  }, []);
 
   const filteredItems =
     selectedCategory === "all"
-      ? menuData.flatMap((category) => category.items)
-      : menuData.find((cat) => cat.id === selectedCategory)?.items || [];
+      ? menuCategories.flatMap((category) => category.items)
+      : menuCategories.find((cat) => cat.id === selectedCategory)?.items || [];
 
   return (
     <Container>
@@ -89,28 +107,30 @@ export default function MenuPage() {
         전체 메뉴
       </PageTitle>
 
-      <CategoryTabs>
-        <CategoryTab
-          active={selectedCategory === "all"}
-          onClick={() => setSelectedCategory("all")}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          전체
-        </CategoryTab>
-
-        {menuData.map((category) => (
+      {!loading && (
+        <CategoryTabs>
           <CategoryTab
-            key={category.id}
-            active={selectedCategory === category.id}
-            onClick={() => setSelectedCategory(category.id)}
+            active={selectedCategory === "all"}
+            onClick={() => setSelectedCategory("all")}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {category.name}
+            전체
           </CategoryTab>
-        ))}
-      </CategoryTabs>
+
+          {menuCategories.map((category) => (
+            <CategoryTab
+              key={category.id}
+              active={selectedCategory === category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {category.name}
+            </CategoryTab>
+          ))}
+        </CategoryTabs>
+      )}
 
       <AnimatePresence mode="wait">
         <MenuGrid
@@ -120,7 +140,9 @@ export default function MenuPage() {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
         >
-          {filteredItems.length > 0 ? (
+          {loading ? (
+            <NoItemsMessage>메뉴를 불러오는 중...</NoItemsMessage>
+          ) : filteredItems.length > 0 ? (
             filteredItems.map((item, index) => (
               <MenuCard key={item.id} item={item} index={index} />
             ))
