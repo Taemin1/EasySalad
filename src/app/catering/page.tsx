@@ -12,6 +12,9 @@ const Container = styled.div`
     text-align: center;
     margin-top: 200px;
     margin-bottom: 200px;
+    line-height: 1.3;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 `;
 const Catering = () => {
