@@ -20,6 +20,10 @@ const Container = styled.div`
   padding: 120px 20px 80px;
   max-width: 1400px;
   margin: 0 auto;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 100px 16px 60px;
+  }
 `;
 
 const Title = styled(motion.h1)`
@@ -34,6 +38,11 @@ const Title = styled(motion.h1)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -44,6 +53,7 @@ const ContentWrapper = styled.div`
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 `;
 
@@ -83,6 +93,11 @@ const MenuGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 `;
 
 const MenuCard = styled.div`
@@ -215,6 +230,13 @@ const CartSection = styled(motion.div)`
   border-radius: 16px;
   padding: 30px;
   box-shadow: ${theme.shadows.md};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    position: static;
+    top: auto;
+    padding: 20px;
+    margin-top: 30px;
+  }
 `;
 
 const CartTitle = styled.h2`
