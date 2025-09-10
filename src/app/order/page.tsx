@@ -43,11 +43,7 @@ const ContentWrapper = styled.div`
   align-items: start;
 `;
 
-const MenuSection = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 30px;
-`;
+const MenuSection = styled.div``;
 
 const CategoryTabs = styled.div`
   display: flex;
@@ -82,7 +78,7 @@ const CategoryTab = styled.button<{ $isActive: boolean }>`
 const MenuGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
+  gap: 30px;
 `;
 
 const MenuCard = styled.div`
