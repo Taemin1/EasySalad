@@ -57,8 +57,6 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const MenuSection = styled.div``;
-
 const CategoryTabs = styled.div`
   display: flex;
   gap: 15px;
@@ -94,7 +92,7 @@ const MenuGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  @media (max-width: ${theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
     gap: 20px;
   }
@@ -530,142 +528,140 @@ export default function OrderPage() {
       </Title>
 
       <ContentWrapper>
-        <MenuSection>
-          {!loading && (
-            <CategoryTabs>
-              {menuCategories.map((category) => (
-                <CategoryTab
-                  key={category.id}
-                  $isActive={selectedCategory === category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                >
-                  {category.name}
-                </CategoryTab>
-              ))}
-            </CategoryTabs>
-          )}
-
-          <MenuGrid>
-            {loading ? (
-              <div
-                style={{
-                  gridColumn: "1 / -1",
-                  textAlign: "center",
-                  padding: "60px 0",
-                }}
+        {!loading && (
+          <CategoryTabs>
+            {menuCategories.map((category) => (
+              <CategoryTab
+                key={category.id}
+                $isActive={selectedCategory === category.id}
+                onClick={() => setSelectedCategory(category.id)}
               >
-                메뉴를 불러오는 중...
-              </div>
-            ) : (
-              currentItems.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <MenuCard>
-                    <ImageContainer>
-                      {item.image ? (
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          style={{ objectFit: "cover" }}
-                        />
-                      ) : (
-                        <PlaceholderIcon>
-                          {getEmoji(item.category)}
-                        </PlaceholderIcon>
-                      )}
-                    </ImageContainer>
-                    <MenuContent>
-                      <MenuName>{item.name}</MenuName>
-                      {item.description && (
-                        <MenuDescription>{item.description}</MenuDescription>
-                      )}
+                {category.name}
+              </CategoryTab>
+            ))}
+          </CategoryTabs>
+        )}
 
-                      {/* 사이즈 선택이 가능한 메뉴 */}
-                      {item.size &&
-                      Array.isArray(item.size) &&
-                      item.size.includes("Full") &&
-                      item.size.includes("Half") &&
-                      item.halfPrice ? (
-                        <>
-                          <SizeOptions>
-                            <SizeButton
-                              $isSelected={
-                                selectedSizes[item.id] === "Half" ||
-                                !selectedSizes[item.id]
-                              }
-                              onClick={() =>
-                                setSelectedSizes((prev) => ({
-                                  ...prev,
-                                  [item.id]: "Half",
-                                }))
-                              }
-                            >
-                              Half
-                              <SizePrice>
-                                {item.halfPrice.toLocaleString()}원
-                              </SizePrice>
-                            </SizeButton>
-                            <SizeButton
-                              $isSelected={selectedSizes[item.id] === "Full"}
-                              onClick={() =>
-                                setSelectedSizes((prev) => ({
-                                  ...prev,
-                                  [item.id]: "Full",
-                                }))
-                              }
-                            >
-                              Full
-                              <SizePrice>
-                                {item.price.toLocaleString()}원
-                              </SizePrice>
-                            </SizeButton>
-                          </SizeOptions>
-                          <AddButton
-                            onClick={() => {
-                              const selectedSize =
-                                selectedSizes[item.id] || "Half";
-                              addToCart(item, selectedSize);
-                            }}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+        <MenuGrid>
+          {loading ? (
+            <div
+              style={{
+                gridColumn: "1 / -1",
+                textAlign: "center",
+                padding: "60px 0",
+              }}
+            >
+              메뉴를 불러오는 중...
+            </div>
+          ) : (
+            currentItems.map((item, index) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <MenuCard>
+                  <ImageContainer>
+                    {item.image ? (
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        style={{ objectFit: "cover" }}
+                      />
+                    ) : (
+                      <PlaceholderIcon>
+                        {getEmoji(item.category)}
+                      </PlaceholderIcon>
+                    )}
+                  </ImageContainer>
+                  <MenuContent>
+                    <MenuName>{item.name}</MenuName>
+                    {item.description && (
+                      <MenuDescription>{item.description}</MenuDescription>
+                    )}
+
+                    {/* 사이즈 선택이 가능한 메뉴 */}
+                    {item.size &&
+                    Array.isArray(item.size) &&
+                    item.size.includes("Full") &&
+                    item.size.includes("Half") &&
+                    item.halfPrice ? (
+                      <>
+                        <SizeOptions>
+                          <SizeButton
+                            $isSelected={
+                              selectedSizes[item.id] === "Half" ||
+                              !selectedSizes[item.id]
+                            }
+                            onClick={() =>
+                              setSelectedSizes((prev) => ({
+                                ...prev,
+                                [item.id]: "Half",
+                              }))
+                            }
                           >
-                            담기 •{" "}
-                            {(selectedSizes[item.id] === "Full"
-                              ? item.price
-                              : item.halfPrice
-                            ).toLocaleString()}
-                            원
-                          </AddButton>
-                        </>
-                      ) : (
-                        /* 일반 메뉴 */
-                        <>
-                          <PriceSection>
-                            <SinglePrice>
-                              {(item.price || 0).toLocaleString()}원
-                            </SinglePrice>
-                          </PriceSection>
-                          <AddButton
-                            onClick={() => addToCart(item)}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+                            Half
+                            <SizePrice>
+                              {item.halfPrice.toLocaleString()}원
+                            </SizePrice>
+                          </SizeButton>
+                          <SizeButton
+                            $isSelected={selectedSizes[item.id] === "Full"}
+                            onClick={() =>
+                              setSelectedSizes((prev) => ({
+                                ...prev,
+                                [item.id]: "Full",
+                              }))
+                            }
                           >
-                            담기
-                          </AddButton>
-                        </>
-                      )}
-                    </MenuContent>
-                  </MenuCard>
-                </motion.div>
-              ))
-            )}
-          </MenuGrid>
-        </MenuSection>
+                            Full
+                            <SizePrice>
+                              {item.price.toLocaleString()}원
+                            </SizePrice>
+                          </SizeButton>
+                        </SizeOptions>
+                        <AddButton
+                          onClick={() => {
+                            const selectedSize =
+                              selectedSizes[item.id] || "Half";
+                            addToCart(item, selectedSize);
+                          }}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          담기 •{" "}
+                          {(selectedSizes[item.id] === "Full"
+                            ? item.price
+                            : item.halfPrice
+                          ).toLocaleString()}
+                          원
+                        </AddButton>
+                      </>
+                    ) : (
+                      /* 일반 메뉴 */
+                      <>
+                        <PriceSection>
+                          <SinglePrice>
+                            {(item.price || 0).toLocaleString()}원
+                          </SinglePrice>
+                        </PriceSection>
+                        <AddButton
+                          onClick={() => addToCart(item)}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          담기
+                        </AddButton>
+                      </>
+                    )}
+                  </MenuContent>
+                </MenuCard>
+              </motion.div>
+            ))
+          )}
+        </MenuGrid>
 
         <CartSection
           initial={{ opacity: 0, x: 20 }}
