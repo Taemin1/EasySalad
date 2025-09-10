@@ -20,10 +20,6 @@ const Container = styled.div`
   padding: 120px 20px 80px;
   max-width: 1400px;
   margin: 0 auto;
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 100px 16px 60px;
-  }
 `;
 
 const Title = styled(motion.h1)`
@@ -38,11 +34,6 @@ const Title = styled(motion.h1)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2.2rem;
-    margin-bottom: 40px;
-  }
 `;
 
 const ContentWrapper = styled.div`
@@ -50,11 +41,12 @@ const ContentWrapper = styled.div`
   grid-template-columns: 1fr 400px;
   gap: 40px;
   align-items: start;
+`;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
+const MenuSection = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
 `;
 
 const CategoryTabs = styled.div`
@@ -91,11 +83,6 @@ const MenuGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
 `;
 
 const MenuCard = styled.div`
@@ -228,13 +215,6 @@ const CartSection = styled(motion.div)`
   border-radius: 16px;
   padding: 30px;
   box-shadow: ${theme.shadows.md};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    position: static;
-    top: auto;
-    padding: 20px;
-    margin-top: 30px;
-  }
 `;
 
 const CartTitle = styled.h2`
@@ -528,140 +508,142 @@ export default function OrderPage() {
       </Title>
 
       <ContentWrapper>
-        {!loading && (
-          <CategoryTabs>
-            {menuCategories.map((category) => (
-              <CategoryTab
-                key={category.id}
-                $isActive={selectedCategory === category.id}
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                {category.name}
-              </CategoryTab>
-            ))}
-          </CategoryTabs>
-        )}
-
-        <MenuGrid>
-          {loading ? (
-            <div
-              style={{
-                gridColumn: "1 / -1",
-                textAlign: "center",
-                padding: "60px 0",
-              }}
-            >
-              메뉴를 불러오는 중...
-            </div>
-          ) : (
-            currentItems.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <MenuCard>
-                  <ImageContainer>
-                    {item.image ? (
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        style={{ objectFit: "cover" }}
-                      />
-                    ) : (
-                      <PlaceholderIcon>
-                        {getEmoji(item.category)}
-                      </PlaceholderIcon>
-                    )}
-                  </ImageContainer>
-                  <MenuContent>
-                    <MenuName>{item.name}</MenuName>
-                    {item.description && (
-                      <MenuDescription>{item.description}</MenuDescription>
-                    )}
-
-                    {/* 사이즈 선택이 가능한 메뉴 */}
-                    {item.size &&
-                    Array.isArray(item.size) &&
-                    item.size.includes("Full") &&
-                    item.size.includes("Half") &&
-                    item.halfPrice ? (
-                      <>
-                        <SizeOptions>
-                          <SizeButton
-                            $isSelected={
-                              selectedSizes[item.id] === "Half" ||
-                              !selectedSizes[item.id]
-                            }
-                            onClick={() =>
-                              setSelectedSizes((prev) => ({
-                                ...prev,
-                                [item.id]: "Half",
-                              }))
-                            }
-                          >
-                            Half
-                            <SizePrice>
-                              {item.halfPrice.toLocaleString()}원
-                            </SizePrice>
-                          </SizeButton>
-                          <SizeButton
-                            $isSelected={selectedSizes[item.id] === "Full"}
-                            onClick={() =>
-                              setSelectedSizes((prev) => ({
-                                ...prev,
-                                [item.id]: "Full",
-                              }))
-                            }
-                          >
-                            Full
-                            <SizePrice>
-                              {item.price.toLocaleString()}원
-                            </SizePrice>
-                          </SizeButton>
-                        </SizeOptions>
-                        <AddButton
-                          onClick={() => {
-                            const selectedSize =
-                              selectedSizes[item.id] || "Half";
-                            addToCart(item, selectedSize);
-                          }}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          담기 •{" "}
-                          {(selectedSizes[item.id] === "Full"
-                            ? item.price
-                            : item.halfPrice
-                          ).toLocaleString()}
-                          원
-                        </AddButton>
-                      </>
-                    ) : (
-                      /* 일반 메뉴 */
-                      <>
-                        <PriceSection>
-                          <SinglePrice>
-                            {(item.price || 0).toLocaleString()}원
-                          </SinglePrice>
-                        </PriceSection>
-                        <AddButton
-                          onClick={() => addToCart(item)}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          담기
-                        </AddButton>
-                      </>
-                    )}
-                  </MenuContent>
-                </MenuCard>
-              </motion.div>
-            ))
+        <MenuSection>
+          {!loading && (
+            <CategoryTabs>
+              {menuCategories.map((category) => (
+                <CategoryTab
+                  key={category.id}
+                  $isActive={selectedCategory === category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                >
+                  {category.name}
+                </CategoryTab>
+              ))}
+            </CategoryTabs>
           )}
-        </MenuGrid>
+
+          <MenuGrid>
+            {loading ? (
+              <div
+                style={{
+                  gridColumn: "1 / -1",
+                  textAlign: "center",
+                  padding: "60px 0",
+                }}
+              >
+                메뉴를 불러오는 중...
+              </div>
+            ) : (
+              currentItems.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <MenuCard>
+                    <ImageContainer>
+                      {item.image ? (
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          style={{ objectFit: "cover" }}
+                        />
+                      ) : (
+                        <PlaceholderIcon>
+                          {getEmoji(item.category)}
+                        </PlaceholderIcon>
+                      )}
+                    </ImageContainer>
+                    <MenuContent>
+                      <MenuName>{item.name}</MenuName>
+                      {item.description && (
+                        <MenuDescription>{item.description}</MenuDescription>
+                      )}
+
+                      {/* 사이즈 선택이 가능한 메뉴 */}
+                      {item.size &&
+                      Array.isArray(item.size) &&
+                      item.size.includes("Full") &&
+                      item.size.includes("Half") &&
+                      item.halfPrice ? (
+                        <>
+                          <SizeOptions>
+                            <SizeButton
+                              $isSelected={
+                                selectedSizes[item.id] === "Half" ||
+                                !selectedSizes[item.id]
+                              }
+                              onClick={() =>
+                                setSelectedSizes((prev) => ({
+                                  ...prev,
+                                  [item.id]: "Half",
+                                }))
+                              }
+                            >
+                              Half
+                              <SizePrice>
+                                {item.halfPrice.toLocaleString()}원
+                              </SizePrice>
+                            </SizeButton>
+                            <SizeButton
+                              $isSelected={selectedSizes[item.id] === "Full"}
+                              onClick={() =>
+                                setSelectedSizes((prev) => ({
+                                  ...prev,
+                                  [item.id]: "Full",
+                                }))
+                              }
+                            >
+                              Full
+                              <SizePrice>
+                                {item.price.toLocaleString()}원
+                              </SizePrice>
+                            </SizeButton>
+                          </SizeOptions>
+                          <AddButton
+                            onClick={() => {
+                              const selectedSize =
+                                selectedSizes[item.id] || "Half";
+                              addToCart(item, selectedSize);
+                            }}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            담기 •{" "}
+                            {(selectedSizes[item.id] === "Full"
+                              ? item.price
+                              : item.halfPrice
+                            ).toLocaleString()}
+                            원
+                          </AddButton>
+                        </>
+                      ) : (
+                        /* 일반 메뉴 */
+                        <>
+                          <PriceSection>
+                            <SinglePrice>
+                              {(item.price || 0).toLocaleString()}원
+                            </SinglePrice>
+                          </PriceSection>
+                          <AddButton
+                            onClick={() => addToCart(item)}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            담기
+                          </AddButton>
+                        </>
+                      )}
+                    </MenuContent>
+                  </MenuCard>
+                </motion.div>
+              ))
+            )}
+          </MenuGrid>
+        </MenuSection>
 
         <CartSection
           initial={{ opacity: 0, x: 20 }}
