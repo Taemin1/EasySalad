@@ -518,32 +518,30 @@ function CheckoutPageContent() {
   };
 
   const getDeliveryFee = () => {
-    const address = deliveryInfo.address;
+    const zipCode = deliveryInfo.zipCode;
 
     // 먼저 배송 가능 지역인지 확인
     let isDeliverable = false;
     let baseFee = 0;
 
-    // 서울 지역 확인
-    if (
-      address.includes("서울") ||
-      address.includes("서울시") ||
-      address.includes("서울특별시")
-    ) {
-      isDeliverable = true;
-      baseFee = 30000;
-    }
-    // 인천, 분당, 판교 지역 확인
-    else if (
-      address.includes("인천") ||
-      address.includes("인천시") ||
-      address.includes("인천광역시") ||
-      address.includes("분당") ||
-      (address.includes("판교") &&
-        (address.includes("성남") || address.includes("경기")))
-    ) {
-      isDeliverable = true;
-      baseFee = 50000;
+    // 우편번호 기반 배송 지역 확인
+    if (zipCode) {
+      const zipNum = parseInt(zipCode);
+      // 서울특별시 우편번호 범위: 01000-09999
+      if (zipNum >= 1000 && zipNum <= 9999) {
+        isDeliverable = true;
+        baseFee = 30000;
+      }
+      // 인천광역시 우편번호 범위: 21000-23999
+      else if (zipNum >= 21000 && zipNum <= 23999) {
+        isDeliverable = true;
+        baseFee = 50000;
+      }
+      // 성남시 우편번호 범위: 13100-13700
+      else if (zipNum >= 13100 && zipNum <= 13700) {
+        isDeliverable = true;
+        baseFee = 50000;
+      }
     }
 
     // 배송 불가 지역이면 -1 반환
