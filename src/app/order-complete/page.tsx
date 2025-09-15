@@ -361,20 +361,17 @@ function OrderCompletePageContent() {
         style={{
           marginTop: "40px",
           padding: "20px",
-          backgroundColor: "#f8f9fa",
           borderRadius: "12px",
           color: theme.colors.text.secondary,
-          fontSize: "0.95rem",
+          fontSize: "1.5rem",
           lineHeight: "1.6",
         }}
       >
         <p>
-          <strong>안내사항:</strong>
+          <strong style={{ color: theme.colors.secondary }}>안내사항:</strong>
           <br />
-          • 주문 확인 후 SMS 또는 이메일로 배송 상태를 알려드립니다.
-          <br />
-          • 배송일 변경이 필요한 경우 하루 전까지 연락해주세요.
-          <br />• 문의사항은 언제든 고객센터로 연락해주세요.
+          • 주문 확인 후 SMS로 주문 확인 메세지를 보내드립니다.
+          <br />• 문의사항은 010-3583-3701로 연락주세요.
         </p>
       </motion.div>
     </Container>
