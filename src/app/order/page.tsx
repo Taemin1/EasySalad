@@ -20,6 +20,10 @@ const Container = styled.div`
   padding: 120px 20px 80px;
   max-width: 1400px;
   margin: 0 auto;
+
+  @media (max-width: 400px) {
+    padding: 100px 15px 120px;
+  }
 `;
 
 const Title = styled(motion.h1)`
@@ -34,6 +38,11 @@ const Title = styled(motion.h1)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -41,6 +50,9 @@ const ContentWrapper = styled.div`
   grid-template-columns: 1fr 400px;
   gap: 40px;
   align-items: start;
+  @media (max-width: 400px) {
+    display: block;
+  }
 `;
 
 const MenuSection = styled.div``;
@@ -79,6 +91,11 @@ const MenuGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 30px;
+
+  @media (max-width: 400px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 `;
 
 const MenuCard = styled.div`
@@ -204,25 +221,72 @@ const AddButton = styled(motion.button)`
   }
 `;
 
-const CartSection = styled(motion.div)`
+const CartSection = styled(motion.div)<{ $expanded: boolean }>`
   position: sticky;
   top: 100px;
   background-color: ${theme.colors.surface};
   border-radius: 16px;
   padding: 30px;
   box-shadow: ${theme.shadows.md};
+
+  @media (max-width: 400px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    border-radius: 16px 16px 0 0;
+    padding: ${(props) => (props.$expanded ? "20px 15px" : "10px 15px")};
+    z-index: 1000;
+    max-height: ${(props) => (props.$expanded ? "50vh" : "60px")};
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+`;
+
+const MobileCartHandle = styled.div`
+  display: none;
+
+  @media (max-width: 400px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    cursor: pointer;
+    border-bottom: 1px solid ${theme.colors.background};
+    margin-bottom: 10px;
+
+    &::before {
+      content: "";
+      width: 40px;
+      height: 4px;
+      background-color: ${theme.colors.text.secondary};
+      border-radius: 2px;
+    }
+  }
 `;
 
 const CartTitle = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 25px;
   color: ${theme.colors.text.primary};
+
+  @media (max-width: 400px) {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    text-align: center;
+  }
 `;
 
 const CartItems = styled.div`
   max-height: 400px;
   overflow-y: auto;
   margin-bottom: 20px;
+
+  @media (max-width: 400px) {
+    max-height: 200px;
+    margin-bottom: 15px;
+  }
 `;
 
 const CartItem = styled(motion.div)`
@@ -371,6 +435,7 @@ export default function OrderPage() {
   }>({});
   const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
   const [loading, setLoading] = useState(true);
+  const [cartExpanded, setCartExpanded] = useState(true);
 
   useEffect(() => {
     const fetchMenuData = async () => {
@@ -431,6 +496,9 @@ export default function OrderPage() {
         },
       ];
     });
+
+    // 모바일에서 장바구니에 아이템 추가 시 자동으로 펼치기
+    setCartExpanded(true);
   };
 
   const updateQuantity = (cartItem: CartItem, delta: number) => {
@@ -642,86 +710,98 @@ export default function OrderPage() {
         </MenuSection>
 
         <CartSection
+          $expanded={cartExpanded}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <CartTitle>🛒 장바구니</CartTitle>
+          <MobileCartHandle onClick={() => setCartExpanded(!cartExpanded)} />
+          <CartTitle>
+            🛒 장바구니 {cart.length > 0 && `(${cart.length})`}
+          </CartTitle>
 
-          <CartItems>
-            {cart.length === 0 ? (
-              <CartEmpty>장바구니가 비어있습니다</CartEmpty>
-            ) : (
-              <AnimatePresence>
-                {cart.map((item) => (
-                  <CartItem
-                    key={item.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    layout
+          {cartExpanded && (
+            <>
+              <CartItems>
+                {cart.length === 0 ? (
+                  <CartEmpty>장바구니가 비어있습니다</CartEmpty>
+                ) : (
+                  <AnimatePresence>
+                    {cart.map((item) => (
+                      <CartItem
+                        key={item.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        layout
+                      >
+                        <CartItemInfo>
+                          <CartItemName>{item.name}</CartItemName>
+                          {item.selectedSize && (
+                            <CartItemDetails>
+                              사이즈: {item.selectedSize}
+                            </CartItemDetails>
+                          )}
+                          <CartItemPrice>
+                            {(
+                              item.selectedPrice ||
+                              item.price ||
+                              0
+                            ).toLocaleString()}
+                            원
+                          </CartItemPrice>
+                        </CartItemInfo>
+                        <QuantityControl>
+                          <QuantityButton
+                            onClick={() => updateQuantity(item, -1)}
+                          >
+                            -
+                          </QuantityButton>
+                          <QuantityInput
+                            type="number"
+                            value={item.quantity}
+                            onChange={(e) => {
+                              const value = parseInt(e.target.value);
+                              if (!isNaN(value) && value > 0) {
+                                setQuantity(item, value);
+                              }
+                            }}
+                            onBlur={(e) => {
+                              const value = parseInt(e.target.value);
+                              if (isNaN(value) || value < 1) {
+                                setQuantity(item, 1);
+                              }
+                            }}
+                            min="1"
+                          />
+                          <QuantityButton
+                            onClick={() => updateQuantity(item, 1)}
+                          >
+                            +
+                          </QuantityButton>
+                        </QuantityControl>
+                      </CartItem>
+                    ))}
+                  </AnimatePresence>
+                )}
+              </CartItems>
+
+              {cart.length > 0 && (
+                <CartSummary>
+                  <TotalPrice>
+                    <span>총 금액</span>
+                    <span>{calculateTotal().toLocaleString()}원</span>
+                  </TotalPrice>
+                  <CheckoutButton
+                    onClick={handleCheckout}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    <CartItemInfo>
-                      <CartItemName>{item.name}</CartItemName>
-                      {item.selectedSize && (
-                        <CartItemDetails>
-                          사이즈: {item.selectedSize}
-                        </CartItemDetails>
-                      )}
-                      <CartItemPrice>
-                        {(
-                          item.selectedPrice ||
-                          item.price ||
-                          0
-                        ).toLocaleString()}
-                        원
-                      </CartItemPrice>
-                    </CartItemInfo>
-                    <QuantityControl>
-                      <QuantityButton onClick={() => updateQuantity(item, -1)}>
-                        -
-                      </QuantityButton>
-                      <QuantityInput
-                        type="number"
-                        value={item.quantity}
-                        onChange={(e) => {
-                          const value = parseInt(e.target.value);
-                          if (!isNaN(value) && value > 0) {
-                            setQuantity(item, value);
-                          }
-                        }}
-                        onBlur={(e) => {
-                          const value = parseInt(e.target.value);
-                          if (isNaN(value) || value < 1) {
-                            setQuantity(item, 1);
-                          }
-                        }}
-                        min="1"
-                      />
-                      <QuantityButton onClick={() => updateQuantity(item, 1)}>
-                        +
-                      </QuantityButton>
-                    </QuantityControl>
-                  </CartItem>
-                ))}
-              </AnimatePresence>
-            )}
-          </CartItems>
-
-          {cart.length > 0 && (
-            <CartSummary>
-              <TotalPrice>
-                <span>총 금액</span>
-                <span>{calculateTotal().toLocaleString()}원</span>
-              </TotalPrice>
-              <CheckoutButton
-                onClick={handleCheckout}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                결제하기
-              </CheckoutButton>
-            </CartSummary>
+                    결제하기
+                  </CheckoutButton>
+                </CartSummary>
+              )}
+            </>
           )}
         </CartSection>
       </ContentWrapper>
