@@ -8,6 +8,7 @@ import { theme } from "@/styles/theme";
 import { getMenuByCategories } from "@/lib/menu";
 import { MenuItem, MenuCategory } from "@/types/menu";
 import Image from "next/image";
+import isPropValid from "@emotion/is-prop-valid";
 
 interface CartItem extends MenuItem {
   quantity: number;
@@ -221,7 +222,9 @@ const AddButton = styled(motion.button)`
   }
 `;
 
-const CartSection = styled(motion.div)<{ $expanded: boolean }>`
+const CartSection = styled(motion.div, {
+  shouldForwardProp: (prop) => isPropValid(prop) && prop !== "expanded",
+})<{ expanded: boolean }>`
   position: sticky;
   top: 100px;
   background-color: ${theme.colors.surface};
@@ -236,9 +239,9 @@ const CartSection = styled(motion.div)<{ $expanded: boolean }>`
     right: 0;
     top: auto;
     border-radius: 16px 16px 0 0;
-    padding: ${(props) => (props.$expanded ? "20px 15px" : "10px 15px")};
+    padding: ${(props) => (props.expanded ? "20px 15px" : "10px 15px")};
     z-index: 1000;
-    max-height: ${(props) => (props.$expanded ? "50vh" : "60px")};
+    max-height: ${(props) => (props.expanded ? "50vh" : "60px")};
     overflow: hidden;
     transition: all 0.3s ease;
   }
@@ -279,12 +282,12 @@ const CartTitle = styled.h2`
 `;
 
 const CartItems = styled.div`
-  max-height: 400px;
+  max-height: 40vh;
   overflow-y: auto;
   margin-bottom: 20px;
 
   @media (max-width: 400px) {
-    max-height: 200px;
+    max-height: 100px;
     margin-bottom: 15px;
   }
 `;
@@ -710,7 +713,7 @@ export default function OrderPage() {
         </MenuSection>
 
         <CartSection
-          $expanded={cartExpanded}
+          expanded={cartExpanded}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
