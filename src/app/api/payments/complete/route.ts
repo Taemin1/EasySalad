@@ -6,7 +6,7 @@ import nodemailer from "nodemailer";
 interface CompletePaymentRequest {
   paymentId: string;
   orderId: string;
-  amount: number;
+  amount?: number; // redirect 방식에서는 amount가 없을 수 있음
 }
 
 interface OrderItem {
@@ -248,10 +248,10 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // 포트원에서 결제 검증
+    // 포트원에서 결제 검증 (amount가 없으면 주문의 총 금액 사용)
     const verificationResult = await verifyPaymentWithPortOne(
       paymentId,
-      amount
+      amount || order.total_amount
     );
 
     if (!verificationResult.verified) {
@@ -352,6 +352,7 @@ export async function POST(request: NextRequest) {
     // 포트원 공식 예제와 동일한 응답 형식
     return NextResponse.json({
       status: "PAID",
+      orderNumber: updatedOrder.order_number, // redirect 페이지에서 사용할 수 있도록 직접 반환
       order: {
         id: updatedOrder.id,
         orderNumber: updatedOrder.order_number,

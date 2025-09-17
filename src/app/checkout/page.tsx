@@ -696,8 +696,8 @@ function CheckoutPageContent() {
             }),
         },
         customData: { orderId: order.id },
+        redirectUrl: `${window.location.origin}/payment/redirect?orderId=${order.id}&paymentId=${paymentId}`,
       });
-
       const paymentResponse = payment as PaymentResponse;
       if (!payment || paymentResponse.code) {
         // 결제 실패 시 주문을 취소 상태로 변경
