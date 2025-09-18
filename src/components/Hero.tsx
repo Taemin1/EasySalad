@@ -212,14 +212,38 @@ const Indicator = styled.button<{ active: boolean }>`
 
 export default function Hero() {
   const slideImages = [
-    "/salad/carrot-salad.png",
-    "/salad/chicken-salad.png",
-    "/salad/garage-salad.png",
-    "/salad/sea-salad.png",
-    "/salad/ricotta-salad.png",
-    "/salad/tuna-salad.png",
-    "/salad/mozza-salad.png",
-    "/salad/mixed-salad.png",
+    {
+      src: "/salad/mexican-salad.png",
+      alt: "멕시칸 샐러드 - 신선한 채소와 매콤한 드레싱의 조화",
+    },
+    {
+      src: "/salad/chicken-salad.png",
+      alt: "닭가슴살 샐러드 - 담백한 닭가슴살과 신선한 야채의 조합",
+    },
+    {
+      src: "/salad/garage-salad.png",
+      alt: "가라아게 샐러드 - 바삭한 가라아게와 신선한 채소의 조화",
+    },
+    {
+      src: "/salad/sea-salad.png",
+      alt: "지중해풍 샐러드 - 신선한 해산물과 채소의 조화",
+    },
+    {
+      src: "/salad/ricotta-salad.png",
+      alt: "리코타 샐러드 - 부드러운 리코타 치즈와 신선한 채소",
+    },
+    {
+      src: "/salad/smoked-salmon-poke-salad.png",
+      alt: "훈제연어 포케 샐러드 - 고단백 훈제연어 포케",
+    },
+    {
+      src: "/sandwich/bulgogi-sandwich.png",
+      alt: "불고기 샌드위치 - 한국인의 입맛에 맞춘 불고기 샌드위치",
+    },
+    {
+      src: "/sandwich/egg-cabbage-sandwich.png",
+      alt: "에그양배추 샌드위치 - 신선한 에그양배추 샌드위치",
+    },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -327,11 +351,7 @@ export default function Hero() {
         >
           {slideImages.map((image, index) => (
             <Slide key={index}>
-              <SlideImage
-                src={image}
-                alt={`샐러드 이미지 ${index + 1}`}
-                loading="lazy"
-              />
+              <SlideImage src={image.src} alt={image.alt} loading="lazy" />
             </Slide>
           ))}
         </SlideTrack>
