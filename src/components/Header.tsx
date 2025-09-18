@@ -178,9 +178,10 @@ export default function Header() {
         <LogoWrapper onClick={() => router.push("/")}>
           <Image
             src="/EzySaladLogo.png"
-            alt="EzySalad Logo"
+            alt="ezySalad - 신선한 샐러드 배달 서비스"
             width={150}
             height={50}
+            priority
           />
         </LogoWrapper>
 
