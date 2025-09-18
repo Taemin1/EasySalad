@@ -1,28 +1,19 @@
-"use client";
+import { Metadata } from "next";
+import CateringContent from "./CateringContent";
 
-import styled from "@emotion/styled";
-
-const Container = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 120px 20px 60px;
-
-  h1 {
-    font-size: 2.5rem;
-    text-align: center;
-    margin-top: 200px;
-    margin-bottom: 200px;
-    line-height: 1.3;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-  }
-`;
-const Catering = () => {
-  return (
-    <Container>
-      <h1>회사 스낵 서비스 개발 예정</h1>
-    </Container>
-  );
+export const metadata: Metadata = {
+  title: "케이터링 | ezySalad - 회사 스낵 서비스 개발 예정",
+  description: "ezySalad의 회사 스낵 서비스가 곧 출시됩니다. 기업 케이터링, 사무실 간식 서비스, 이지밀 브랜드로 새로운 서비스를 준비중입니다",
+  keywords: "회사 케이터링, 사무실 간식, 기업 스낵 서비스, 이지밀, 회사 도시락, 사내 복지",
+  openGraph: {
+    title: "케이터링 | ezySalad - 회사 스낵 서비스",
+    description: "회사 스낵 서비스 개발 예정 - 기업 케이터링 전문 서비스",
+    type: "website",
+    locale: "ko_KR",
+    siteName: "ezySalad",
+  },
 };
 
-export default Catering;
+export default function CateringPage() {
+  return <CateringContent />;
+}
