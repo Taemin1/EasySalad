@@ -1,7 +1,5 @@
 import { Metadata } from "next";
-import GlobalStyleProvider from "@/components/GlobalStyleProvider";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import ClientLayout from "./ClientLayout";
 
 export const metadata: Metadata = {
   title: "ezySalad - 신선하고 건강한 샐러드 & 샌드위치",
@@ -33,11 +31,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <GlobalStyleProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-        </GlobalStyleProvider>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
