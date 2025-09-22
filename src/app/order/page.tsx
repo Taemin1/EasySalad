@@ -60,9 +60,10 @@ const MenuSection = styled.div``;
 
 const CategoryTabs = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 15px;
   margin-bottom: 40px;
-  overflow-x: auto;
   padding-bottom: 10px;
   border-bottom: 2px solid ${theme.colors.background};
 `;
