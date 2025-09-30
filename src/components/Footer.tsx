@@ -53,6 +53,16 @@ const Copyright = styled.div`
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   opacity: 0.6;
+
+  .mobile-br {
+    display: none;
+  }
+
+  @media (max-width: 480px) {
+    .mobile-br {
+      display: inline;
+    }
+  }
 `;
 
 export default function Footer() {
@@ -91,7 +101,7 @@ export default function Footer() {
         </FooterSection>
       </FooterContent>
 
-      <Copyright>© 2025 ezySalad. All rights reserved.</Copyright>
+      <Copyright>© 2025 ezySalad.<br className="mobile-br" /> All rights reserved.</Copyright>
     </FooterContainer>
   );
 }
