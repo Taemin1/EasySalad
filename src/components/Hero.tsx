@@ -58,6 +58,7 @@ const Subtitle = styled(motion.p)`
   color: ${theme.colors.text.secondary};
   margin-bottom: 40px;
   max-width: 1000px;
+  word-break: keep-all;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 1.2rem;
