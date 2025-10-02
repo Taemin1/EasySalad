@@ -552,7 +552,7 @@ function CheckoutPageContent() {
     const subtotal = calculateSubtotal();
 
     // 30만원 이상이면 무료배송
-    if (subtotal >= 0) {
+    if (subtotal >= 300000) {
       return 0;
     }
 
