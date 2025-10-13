@@ -4,10 +4,10 @@ import { supabase } from "@/lib/supabase";
 // 주문 상태 업데이트 API
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const orderId = params.id;
+    const { id: orderId } = await params;
     const body = await request.json();
     const { status } = body;
 
