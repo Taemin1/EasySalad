@@ -681,7 +681,7 @@ function CheckoutPageContent() {
 
       const payment = await PortOne.requestPayment({
         storeId: process.env.NEXT_PUBLIC_PORTONE_STORE_ID!,
-        channelKey: "channel-key-25ae06f8-95ed-4ebe-9a3b-bca3ff7f3086",
+        channelKey: process.env.NEXT_PUBLIC_PORTONE_STORE_CHANNEL_KEY!,
         paymentId,
         orderName: `ezySalad 주문 (${order.orderNumber})`,
         totalAmount: order.totalAmount,
@@ -690,10 +690,7 @@ function CheckoutPageContent() {
         customer: {
           fullName: order.customerName,
           phoneNumber: order.customerPhone,
-          ...(order.customerEmail &&
-            order.customerEmail.trim() !== "" && {
-              email: order.customerEmail,
-            }),
+          email: order.customerEmail,
         },
         customData: { orderId: order.id },
         redirectUrl: `${window.location.origin}/payment/redirect?orderId=${order.id}&paymentId=${paymentId}`,
