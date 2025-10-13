@@ -6,7 +6,7 @@ import nodemailer from "nodemailer";
 interface CompletePaymentRequest {
   paymentId: string;
   orderId: string;
-  amount?: number; // redirect 방식에서는 amount가 없을 수 있음
+  amount?: number;
 }
 
 interface OrderItem {
@@ -22,7 +22,7 @@ interface OrderData {
   order_number: string;
   customer_name: string;
   customer_phone: string;
-  customer_email?: string;
+  customer_email: string;
   delivery_address: string;
   delivery_detail_address: string;
   delivery_zip_code: string;

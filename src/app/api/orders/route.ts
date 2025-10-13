@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       .insert({
         customer_name: deliveryInfo.name,
         customer_phone: deliveryInfo.phone,
-        customer_email: deliveryInfo.email || null,
+        customer_email: deliveryInfo.email,
         delivery_address: deliveryInfo.address,
         delivery_detail_address: deliveryInfo.detailAddress,
         delivery_zip_code: deliveryInfo.zipCode,
