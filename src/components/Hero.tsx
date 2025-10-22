@@ -53,6 +53,28 @@ const Title = styled(motion.h1)`
   }
 `;
 
+const TitleDescription = styled(motion.h2)`
+  font-size: 2rem;
+  margin-bottom: 30px;
+  word-break: keep-all;
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary} 0%,
+    ${theme.colors.secondary} 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 3rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 2.5rem;
+  }
+`;
+
 const Subtitle = styled(motion.p)`
   font-size: 1.5rem;
   color: ${theme.colors.text.secondary};
@@ -308,26 +330,33 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          ezySalad - 건강한 하루의 시작
+          이지샐러드
         </Title>
+        <TitleDescription
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          신선한 샐러드와 샌드위치 단체 배달 서비스
+        </TitleDescription>
 
         <Subtitle
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          건강한 식단을 위한 최선의 선택
+          건강한 단체 식사를 위한 최선의 선택
           <br />
-          이지샐러드가 여러분의 식탁을
+          이지샐러드가 여러분의 회사와 모임을
           <br />
           풍성하게 채워드립니다.
           <br />
           <br />
           신선한 재료와 다양한 맛으로,
           <br />
-          한국인의 입맛에 맞춘 샐러드, 샌드위치,
+          회의, 행사, 점심 단체 주문까지
           <br />
-          도시락을 만나 보세요.
+          간편하게 배달해드립니다.
         </Subtitle>
 
         <CTAButton

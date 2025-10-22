@@ -101,7 +101,10 @@ export default function Footer() {
         </FooterSection>
       </FooterContent>
 
-      <Copyright>© 2025 ezySalad.<br className="mobile-br" /> All rights reserved.</Copyright>
+      <Copyright>
+        © 2025 이지샐러드.
+        <br className="mobile-br" /> All rights reserved.
+      </Copyright>
     </FooterContainer>
   );
 }

@@ -13,6 +13,6 @@ export default function robots(): MetadataRoute.Robots {
         "/api/",
       ],
     },
-    sitemap: "https://easysalad.co.kr/sitemap.xml",
+    sitemap: ["https://ezysalad.store/sitemap.xml", "https://ezy-salad.store/sitemap.xml"],
   };
 }
