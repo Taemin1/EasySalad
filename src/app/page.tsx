@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   keywords:
     "샐러드 배달, 회사 단체 주문, 샌드위치 단체 주문, 신선한 샐러드, 서울 샐러드 단체주문 배달, 이지샐러드",
   openGraph: {
-    title: "이지샐러드 - 신선한 샐러드 배달 서비스",
+    title: "이지샐러드 - 신선한 샐러드와 샌드위치 배달 서비스",
     description:
       "매일 신선한 재료로 만드는 건강한 샐러드와 샌드위치. 서울/인천/성남 단체주문 배달 서비스",
     type: "website",

@@ -1,8 +1,8 @@
-# 이지샐러드 (EasySalad)
+# 이지샐러드 (EzySalad)
 
 **신선한 샐러드와 샌드위치를 위한 프리미엄 배달 서비스**
 
-[https://easysalad.store](https://easysalad.store)
+**URL** : [https://ezysalad.store](https://ezysalad.store)
 
 ---
 
