@@ -2,14 +2,25 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+
+  // Turbopack 사용 명시
+  turbopack: {},
+
   compiler: {
     emotion: true,
   },
+
   images: {
-    domains: ["msnpctknnynaeoaujccp.supabase.co"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "msnpctknnynaeoaujccp.supabase.co",
+      },
+    ],
   },
+
+  // webpack 설정 유지
   webpack: (config, { isServer }) => {
-    // 클라이언트 사이드에서만 포트원 SDK 로드
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -22,4 +33,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
