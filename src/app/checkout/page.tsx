@@ -17,7 +17,7 @@ interface CartItem {
   image?: string;
   category: string;
   selectedSize?: "Full" | "Half";
-  selectedPrice?: number;
+  selectedPrice: number;
 }
 
 interface DeliveryInfo {
@@ -511,8 +511,7 @@ function CheckoutPageContent() {
 
   const calculateSubtotal = () => {
     return cart.reduce(
-      (total, item) =>
-        total + (item.selectedPrice || item.price || 0) * item.quantity,
+      (total, item) => total + item.selectedPrice * item.quantity,
       0
     );
   };
@@ -984,10 +983,7 @@ function CheckoutPageContent() {
                   <ItemQuantity>{item.quantity}개</ItemQuantity>
                 </ItemInfo>
                 <ItemPrice>
-                  {(
-                    (item.selectedPrice || item.price || 0) * item.quantity
-                  ).toLocaleString()}
-                  원
+                  {(item.selectedPrice * item.quantity).toLocaleString()}원
                 </ItemPrice>
               </OrderItem>
             ))}
@@ -1003,8 +999,8 @@ function CheckoutPageContent() {
                   {deliveryFee === -1
                     ? "배송불가"
                     : deliveryFee === 0
-                    ? "무료"
-                    : `${deliveryFee.toLocaleString()}원`}
+                      ? "무료"
+                      : `${deliveryFee.toLocaleString()}원`}
                 </span>
               </TotalRow>
               <TotalRow $isFinal>
@@ -1030,8 +1026,8 @@ function CheckoutPageContent() {
               {deliveryFee === -1
                 ? "배송 불가 지역"
                 : isLoading
-                ? "주문 중..."
-                : "주문하기"}
+                  ? "주문 중..."
+                  : "주문하기"}
             </CheckoutButton>
           </OrderSummary>
         </RightSection>
