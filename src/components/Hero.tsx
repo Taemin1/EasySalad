@@ -304,17 +304,6 @@ export default function Hero() {
 
   const maxIndex = Math.max(0, slideImages.length - slidesPerView);
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => {
-      const next = prev + 1;
-      return next > maxIndex ? 0 : next;
-    });
-  };
-
   const goToSlide = (index: number) => {
     setCurrentIndex(Math.min(index, maxIndex));
   };
@@ -385,40 +374,6 @@ export default function Hero() {
             </Slide>
           ))}
         </SlideTrack>
-
-        <SlideButton
-          className="prev"
-          onClick={handlePrev}
-          disabled={currentIndex === 0}
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </SlideButton>
-
-        <SlideButton
-          className="next"
-          onClick={handleNext}
-          disabled={currentIndex === maxIndex}
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </SlideButton>
 
         <SlideIndicators>
           {Array.from({ length: indicatorCount }).map((_, index) => (

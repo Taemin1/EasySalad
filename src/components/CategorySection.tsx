@@ -41,13 +41,9 @@ const Grid = styled.div`
 
 interface CategorySectionProps {
   category: MenuCategory;
-  delay?: number;
 }
 
-export default function CategorySection({
-  category,
-  delay = 0,
-}: CategorySectionProps) {
+export default function CategorySection({ category }: CategorySectionProps) {
   // 카테고리별로 처음 4개 아이템만 표시
   const displayItems = category.items.slice(0, 4);
 
@@ -56,14 +52,13 @@ export default function CategorySection({
       <CategoryTitle
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ delay }}
       >
         {category.name}
       </CategoryTitle>
 
       <Grid>
-        {displayItems.map((item, index) => (
-          <MenuCard key={item.id} item={item} index={index} />
+        {displayItems.map((item) => (
+          <MenuCard key={item.id} item={item} />
         ))}
       </Grid>
     </Section>

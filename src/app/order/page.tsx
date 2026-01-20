@@ -13,7 +13,7 @@ import isPropValid from "@emotion/is-prop-valid";
 interface CartItem extends MenuItem {
   quantity: number;
   selectedSize?: "Full" | "Half";
-  selectedPrice?: number;
+  selectedPrice: number;
 }
 
 const Container = styled.div`
@@ -430,6 +430,31 @@ const getEmoji = (category: string) => {
   return emojiMap[category] || "🍽️";
 };
 
+// 메뉴에 사이즈 옵션이 있는지 확인
+const hasSizeOptions = (item: MenuItem): boolean => {
+  if (!item.halfPrice || !item.size) {
+    return false;
+  }
+  return item.size.includes("Full") && item.size.includes("Half");
+};
+
+// 장바구니 아이템이 같은지 확인 (사이즈 포함)
+const isSameCartItem = (
+  cartItem: CartItem,
+  targetItem: { id: string; selectedSize?: "Full" | "Half" }
+): boolean => {
+  const hasSizes = !!cartItem.selectedSize;
+
+  if (hasSizes) {
+    return (
+      cartItem.id === targetItem.id &&
+      cartItem.selectedSize === targetItem.selectedSize
+    );
+  }
+
+  return cartItem.id === targetItem.id;
+};
+
 export default function OrderPage() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState("sandwiches");
@@ -461,30 +486,24 @@ export default function OrderPage() {
   }, []);
 
   const addToCart = (item: MenuItem, size?: "Full" | "Half") => {
-    const hasSizes =
-      item.size &&
-      Array.isArray(item.size) &&
-      item.size.includes("Full") &&
-      item.size.includes("Half");
-    const selectedSize = size || (hasSizes ? "Full" : undefined);
+    const itemHasSizes = hasSizeOptions(item);
+    const selectedSize = size || (itemHasSizes ? "Full" : undefined);
     const selectedPrice =
       selectedSize === "Half" && item.halfPrice ? item.halfPrice : item.price;
 
+    const newItem = {
+      id: item.id,
+      selectedSize,
+    };
+
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) =>
-        hasSizes
-          ? cartItem.id === item.id && cartItem.selectedSize === selectedSize
-          : cartItem.id === item.id
+        isSameCartItem(cartItem, newItem)
       );
 
       if (existingItem) {
         return prevCart.map((cartItem) =>
-          (
-            hasSizes
-              ? cartItem.id === item.id &&
-                cartItem.selectedSize === selectedSize
-              : cartItem.id === item.id
-          )
+          isSameCartItem(cartItem, newItem)
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         );
@@ -501,7 +520,6 @@ export default function OrderPage() {
       ];
     });
 
-    // 모바일에서 장바구니에 아이템 추가 시 자동으로 펼치기
     setCartExpanded(true);
   };
 
@@ -509,16 +527,12 @@ export default function OrderPage() {
     setCart((prevCart) => {
       return prevCart
         .map((item) => {
-          const isMatch = cartItem.selectedSize
-            ? item.id === cartItem.id &&
-              item.selectedSize === cartItem.selectedSize
-            : item.id === cartItem.id;
-
-          if (isMatch) {
-            const newQuantity = item.quantity + delta;
-            return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
+          if (!isSameCartItem(item, cartItem)) {
+            return item;
           }
-          return item;
+
+          const newQuantity = item.quantity + delta;
+          return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
         })
         .filter(Boolean) as CartItem[];
     });
@@ -529,12 +543,7 @@ export default function OrderPage() {
 
     setCart((prevCart) => {
       return prevCart.map((item) => {
-        const isMatch = cartItem.selectedSize
-          ? item.id === cartItem.id &&
-            item.selectedSize === cartItem.selectedSize
-          : item.id === cartItem.id;
-
-        if (isMatch) {
+        if (isSameCartItem(item, cartItem)) {
           return { ...item, quantity };
         }
         return item;
@@ -544,8 +553,7 @@ export default function OrderPage() {
 
   const calculateTotal = () => {
     return cart.reduce(
-      (total, item) =>
-        total + (item.selectedPrice || item.price || 0) * item.quantity,
+      (total, item) => total + item.selectedPrice * item.quantity,
       0
     );
   };
@@ -631,12 +639,8 @@ export default function OrderPage() {
                         <MenuDescription>{item.description}</MenuDescription>
                       )}
 
-                      {/* 사이즈 선택이 가능한 메뉴 */}
-                      {item.size &&
-                      Array.isArray(item.size) &&
-                      item.size.includes("Full") &&
-                      item.size.includes("Half") &&
-                      item.halfPrice ? (
+                      {hasSizeOptions(item) ? (
+                        // 사이즈 선택이 가능한 메뉴
                         <>
                           <SizeOptions>
                             <SizeButton
@@ -653,7 +657,7 @@ export default function OrderPage() {
                             >
                               Half
                               <SizePrice>
-                                {item.halfPrice.toLocaleString()}원
+                                {item.halfPrice?.toLocaleString()}원
                               </SizePrice>
                             </SizeButton>
                             <SizeButton
@@ -684,16 +688,16 @@ export default function OrderPage() {
                             {(selectedSizes[item.id] === "Full"
                               ? item.price
                               : item.halfPrice
-                            ).toLocaleString()}
+                            )?.toLocaleString()}
                             원
                           </AddButton>
                         </>
                       ) : (
-                        /* 일반 메뉴 */
+                        // 일반 메뉴
                         <>
                           <PriceSection>
                             <SinglePrice>
-                              {(item.price || 0).toLocaleString()}원
+                              {item.price.toLocaleString()}원
                             </SinglePrice>
                           </PriceSection>
                           <AddButton
@@ -747,12 +751,7 @@ export default function OrderPage() {
                             </CartItemDetails>
                           )}
                           <CartItemPrice>
-                            {(
-                              item.selectedPrice ||
-                              item.price ||
-                              0
-                            ).toLocaleString()}
-                            원
+                            {item.selectedPrice.toLocaleString()}원
                           </CartItemPrice>
                         </CartItemInfo>
                         <QuantityControl>

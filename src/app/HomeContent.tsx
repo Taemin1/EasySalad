@@ -38,7 +38,8 @@ const FeatureCard = styled(motion.div)`
     ${theme.colors.surface} 100%
   );
   box-shadow: ${theme.shadows.md};
-  transition: transform ${theme.transitions.normal},
+  transition:
+    transform ${theme.transitions.normal},
     box-shadow ${theme.transitions.normal};
 
   &:hover {
@@ -208,12 +209,8 @@ export default function HomeContent() {
             메뉴를 불러오는 중...
           </div>
         ) : (
-          featuredCategories.map((category, index) => (
-            <CategorySection
-              key={category.id}
-              category={category}
-              delay={index * 0.2}
-            />
+          featuredCategories.map((category) => (
+            <CategorySection key={category.id} category={category} />
           ))
         )}
       </MenuPreview>

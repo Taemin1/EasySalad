@@ -6,7 +6,7 @@ export interface MenuItem {
   price: number;
   halfPrice?: number;
   image?: string;
-  size?: string | string[];
+  size?: string[];
   isNew?: boolean;
   isPopular?: boolean;
 }
