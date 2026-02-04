@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { theme } from "@/styles/theme";
-import { supabase } from "@/../lib/supabase";
+import { createClient } from "@/../lib/supabase/client";
 import isPropValid from "@emotion/is-prop-valid";
 
 const Container = styled.div`
@@ -203,6 +203,7 @@ const LoginPage = () => {
     setErrors({});
 
     try {
+      const supabase = createClient();
       const { data, error } = await supabase.auth.signInWithPassword({
         email: formData.email.trim(),
         password: formData.password.trim(),
@@ -214,7 +215,8 @@ const LoginPage = () => {
       }
 
       if (data.user) {
-        router.back();
+        alert("로그인에 성공했습니다.");
+        router.push("/university/duksung");
       }
     } catch (error) {
       console.error("Login error:", error);

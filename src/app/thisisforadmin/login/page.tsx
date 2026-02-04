@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { theme } from "@/styles/theme";
-import { supabase } from "@/../lib/supabase";
+import { createClient } from "@/../lib/supabase/client";
 import isPropValid from "@emotion/is-prop-valid";
 
 const Container = styled.div`
@@ -171,6 +171,7 @@ export default function AdminLogin() {
     setErrors({});
 
     try {
+      const supabase = createClient();
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password.trim(),

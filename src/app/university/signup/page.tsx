@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { theme } from "@/styles/theme";
-import { supabase } from "@/../lib/supabase";
+import { createClient } from "@/../lib/supabase/client";
 import isPropValid from "@emotion/is-prop-valid";
 
 const Container = styled.div`
@@ -272,6 +272,9 @@ const SignupPage = () => {
 
     try {
       const fullEmail = getFullEmail();
+      const supabase = createClient();
+
+      // Supabase Auth로 회원가입
       const { data, error } = await supabase.auth.signUp({
         email: fullEmail,
         password: formData.password.trim(),
@@ -279,12 +282,21 @@ const SignupPage = () => {
           data: {
             name: formData.name.trim(),
             phone: formData.phone.trim(),
-            university: formData.university,
+            university:
+              formData.university === "kwangwoon"
+                ? UNIVERSITIES.kwangwoon.name
+                : UNIVERSITIES.duksung.name,
           },
         },
       });
 
+      console.log("=== 회원가입 응답 ===");
+      console.log("Data:", data);
+      console.log("Error:", error);
+      console.log("User:", data.user);
+
       if (error) {
+        console.error("회원가입 에러:", error.message);
         setErrors({ general: error.message });
         return;
       }
