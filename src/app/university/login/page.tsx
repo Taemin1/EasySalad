@@ -1,84 +1,81 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { theme } from "@/styles/theme";
 import { createClient } from "@/../lib/supabase/client";
 import isPropValid from "@emotion/is-prop-valid";
 
 const Container = styled.div`
   min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.primary}20 0%,
-    ${theme.colors.secondary}20 100%
-  );
-  padding: 20px;
+  align-items: center;
+  padding: 2rem;
 `;
 
 const LoginCard = styled(motion.div)`
   background: white;
-  border-radius: 16px;
-  padding: 40px;
-  box-shadow: ${theme.shadows.lg};
+  border-radius: 20px;
+  padding: 3rem;
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 2rem;
+  }
 `;
 
 const Title = styled.h1`
   font-size: 2rem;
-  text-align: center;
-  margin-bottom: 30px;
+  font-weight: 700;
   color: ${theme.colors.text.primary};
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.primary} 0%,
-    ${theme.colors.secondary} 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  text-align: center;
+  margin-bottom: 2rem;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1.5rem;
 `;
 
 const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 `;
 
 const Label = styled.label`
   font-weight: 600;
   color: ${theme.colors.text.primary};
+  font-size: 0.95rem;
 `;
 
 const Input = styled.input<{ $hasError?: boolean }>`
-  padding: 12px 16px;
-  border: 2px solid
-    ${(props) => (props.$hasError ? "#ff6b6b" : theme.colors.background)};
-  border-radius: 8px;
+  padding: 0.875rem;
+  border: 2px solid ${({ $hasError }) => ($hasError ? "#ff6b6b" : "#e0e0e0")};
+  border-radius: 10px;
   font-size: 1rem;
   transition: all ${theme.transitions.fast};
-  background-color: ${theme.colors.surface};
 
   &:focus {
     outline: none;
-    border-color: ${(props) =>
-      props.$hasError ? "#ff6b6b" : theme.colors.primary};
+    border-color: ${({ $hasError }) => ($hasError ? "#ff6b6b" : "#667eea")};
+    box-shadow: 0 0 0 3px
+      ${({ $hasError }) =>
+        $hasError ? "rgba(255, 107, 107, 0.1)" : "rgba(102, 126, 234, 0.1)"};
   }
 
-  &::placeholder {
-    color: ${theme.colors.text.secondary};
+  &:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
   }
 `;
 
@@ -87,37 +84,30 @@ const ErrorMessage = styled.span`
   font-size: 0.85rem;
 `;
 
-const LoginButton = styled(motion.button, {
+const SubmitButton = styled(motion.button, {
   shouldForwardProp: (prop) =>
     isPropValid(prop) && prop !== "$isLoading" && prop !== "isLoading",
 })<{ $isLoading?: boolean }>`
-  width: 100%;
-  padding: 15px;
+  padding: 1rem;
   background: ${({ $isLoading }) =>
     $isLoading
       ? theme.colors.text.secondary
-      : `linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.secondary} 100%)`};
+      : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"};
   color: white;
+  border: none;
+  border-radius: 10px;
   font-size: 1.1rem;
   font-weight: 600;
-  border-radius: 8px;
   cursor: ${({ $isLoading }) => ($isLoading ? "not-allowed" : "pointer")};
-  transition: all ${theme.transitions.normal};
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
 
-  &:hover {
-    transform: ${({ $isLoading }) =>
-      $isLoading ? "none" : "translateY(-2px)"};
-    box-shadow: ${({ $isLoading }) => ($isLoading ? "none" : theme.shadows.md)};
-  }
-
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.7;
     cursor: not-allowed;
-    transform: none;
   }
 `;
 
@@ -136,29 +126,71 @@ const LoadingSpinner = styled.div`
   }
 `;
 
-export default function AdminLogin() {
+const Divider = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e0e0e0;
+  }
+`;
+
+const DividerText = styled.span`
+  color: ${theme.colors.text.secondary};
+  font-size: 0.9rem;
+`;
+
+const SignupLink = styled(Link)`
+  width: 100%;
+  padding: 1rem;
+  background: transparent;
+  border: 2px solid #667eea;
+  border-radius: 10px;
+  color: #667eea;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all ${theme.transitions.fast};
+  text-align: center;
+  text-decoration: none;
+  display: block;
+
+  &:hover {
+    background: #667eea;
+    color: white;
+  }
+`;
+
+const LoginPage = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{
-    email?: string;
-    password?: string;
-    general?: string;
-  }>({});
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const newErrors: Record<string, string> = {};
 
-    // 입력 검증
-    const newErrors: typeof errors = {};
-    if (!email.trim()) {
+    if (!formData.email.trim()) {
       newErrors.email = "이메일을 입력해주세요.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    } else if (!validateEmail(formData.email)) {
       newErrors.email = "올바른 이메일 주소를 입력해주세요.";
     }
 
-    if (!password.trim()) {
+    if (!formData.password.trim()) {
       newErrors.password = "비밀번호를 입력해주세요.";
     }
 
@@ -173,8 +205,8 @@ export default function AdminLogin() {
     try {
       const supabase = createClient();
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password: password.trim(),
+        email: formData.email.trim(),
+        password: formData.password.trim(),
       });
 
       if (error) {
@@ -183,17 +215,8 @@ export default function AdminLogin() {
       }
 
       if (data.user) {
-        // 관리자 계정 확인 (환경변수에서 관리자 이메일 확인)
-        const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-
-        if (data.user.email !== adminEmail) {
-          await supabase.auth.signOut();
-          setErrors({ general: "관리자 권한이 없습니다." });
-          return;
-        }
-
-        // 관리자 대시보드로 이동
-        router.push("/thisisforadmin/dashboard");
+        alert("로그인에 성공했습니다.");
+        router.push("/university/duksung");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -206,22 +229,24 @@ export default function AdminLogin() {
   return (
     <Container>
       <LoginCard
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.6 }}
       >
-        <Title>관리자 로그인</Title>
-        <Form onSubmit={handleLogin}>
+        <Title>로그인</Title>
+        <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label htmlFor="email">이메일</Label>
             <Input
               id="email"
               type="email"
-              value={email}
+              placeholder="example@university.ac.kr"
+              value={formData.email}
               onChange={(e) => {
-                setEmail(e.target.value);
+                setFormData({ ...formData, email: e.target.value });
                 if (errors.email) {
-                  setErrors((prev) => ({ ...prev, email: undefined }));
+                  const { email, ...rest } = errors;
+                  setErrors(rest);
                 }
               }}
               $hasError={!!errors.email}
@@ -235,11 +260,13 @@ export default function AdminLogin() {
             <Input
               id="password"
               type="password"
-              value={password}
+              placeholder="비밀번호를 입력하세요"
+              value={formData.password}
               onChange={(e) => {
-                setPassword(e.target.value);
+                setFormData({ ...formData, password: e.target.value });
                 if (errors.password) {
-                  setErrors((prev) => ({ ...prev, password: undefined }));
+                  const { password, ...rest } = errors;
+                  setErrors(rest);
                 }
               }}
               $hasError={!!errors.password}
@@ -254,7 +281,7 @@ export default function AdminLogin() {
             </ErrorMessage>
           )}
 
-          <LoginButton
+          <SubmitButton
             type="submit"
             $isLoading={isLoading}
             disabled={isLoading}
@@ -263,9 +290,19 @@ export default function AdminLogin() {
           >
             {isLoading && <LoadingSpinner />}
             {isLoading ? "로그인 중..." : "로그인"}
-          </LoginButton>
+          </SubmitButton>
         </Form>
+
+        <Divider>
+          <DividerText>또는</DividerText>
+        </Divider>
+
+        <SignupLink href="/university/signup">
+          계정이 없으신가요? 회원가입
+        </SignupLink>
       </LoginCard>
     </Container>
   );
-}
+};
+
+export default LoginPage;

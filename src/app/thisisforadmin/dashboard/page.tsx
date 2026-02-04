@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { theme } from "@/styles/theme";
-import { supabase } from "@/../lib/supabase";
+import { createClient } from "@/../lib/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { MenuItem } from "@/types/menu";
 
@@ -74,7 +74,6 @@ const SectionTitle = styled.h2`
   align-items: center;
   gap: 10px;
 `;
-
 
 const UserInfo = styled.div`
   display: flex;
@@ -306,10 +305,6 @@ const Input = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
-
-  &[type="number"] {
-    -moz-appearance: textfield;
-  }
 `;
 
 const Textarea = styled.textarea`
@@ -417,35 +412,35 @@ export default function AdminDashboard() {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData((prev) => ({ ...prev, name: e.target.value }));
     },
-    []
+    [],
   );
 
   const handleCategoryChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setFormData((prev) => ({ ...prev, category: e.target.value }));
     },
-    []
+    [],
   );
 
   const handleDescriptionChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setFormData((prev) => ({ ...prev, description: e.target.value }));
     },
-    []
+    [],
   );
 
   const handlePriceChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData((prev) => ({ ...prev, price: e.target.value }));
     },
-    []
+    [],
   );
 
   const handleHalfPriceChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData((prev) => ({ ...prev, half_price: e.target.value }));
     },
-    []
+    [],
   );
 
   const handleSizeChange = useCallback(
@@ -458,47 +453,8 @@ export default function AdminDashboard() {
           .filter((s) => s),
       }));
     },
-    []
+    [],
   );
-
-  const checkUser = useCallback(async () => {
-    try {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
-
-      if (error || !user) {
-        router.push("/thisisforadmin/login");
-        return;
-      }
-
-      // 관리자 권한 확인
-      const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-      if (user.email !== adminEmail) {
-        await supabase.auth.signOut();
-        router.push("/thisisforadmin/login");
-        return;
-      }
-
-      setUser(user);
-    } catch (error) {
-      console.error("Auth error:", error);
-      router.push("/admin/login");
-    } finally {
-      setLoading(false);
-    }
-  }, [router]);
-
-  useEffect(() => {
-    checkUser();
-  }, [checkUser]);
-
-  useEffect(() => {
-    if (user) {
-      loadMenus();
-    }
-  }, [user]);
 
   const loadMenus = async () => {
     try {
@@ -647,13 +603,11 @@ export default function AdminDashboard() {
         size: formData.size.length > 0 ? formData.size : null,
       };
 
-
       const url = editingMenu
         ? `/api/admin/menus/${editingMenu.id}`
         : "/api/admin/menus";
 
       const method = editingMenu ? "PUT" : "POST";
-
 
       const response = await fetch(url, {
         method,
@@ -669,7 +623,7 @@ export default function AdminDashboard() {
         setShowModal(false);
         await loadMenus();
         alert(
-          editingMenu ? "메뉴가 수정되었습니다." : "메뉴가 추가되었습니다."
+          editingMenu ? "메뉴가 수정되었습니다." : "메뉴가 추가되었습니다.",
         );
       } else {
         const errorMsg = result.details
@@ -687,6 +641,7 @@ export default function AdminDashboard() {
 
   const handleLogout = async () => {
     try {
+      const supabase = createClient();
       await supabase.auth.signOut();
       router.push("/thisisforadmin/login");
     } catch (error) {

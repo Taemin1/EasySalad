@@ -124,7 +124,32 @@ const MobileNavLink = styled(Link)`
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
+  const [clickTimer, setClickTimer] = useState<NodeJS.Timeout | null>(null);
   const router = useRouter();
+
+  const handleLogoClick = () => {
+    const newCount = clickCount + 1;
+    setClickCount(newCount);
+
+    if (clickTimer) {
+      clearTimeout(clickTimer);
+    }
+
+    if (newCount === 3) {
+      window.open("/university/login", "_blank");
+      setClickCount(0);
+      setClickTimer(null);
+    } else {
+      const timer = setTimeout(() => {
+        if (newCount < 3) {
+          router.push("/");
+        }
+        setClickCount(0);
+      }, 500);
+      setClickTimer(timer);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -134,20 +159,20 @@ export default function Header() {
       if (isScrolled) {
         document.documentElement.style.setProperty(
           "--header-bg",
-          "rgba(255, 255, 255, 0.95)"
+          "rgba(255, 255, 255, 0.95)",
         );
         document.documentElement.style.setProperty(
           "--header-backdrop",
-          "blur(10px)"
+          "blur(10px)",
         );
         document.documentElement.style.setProperty(
           "--header-shadow",
-          theme.shadows.sm
+          theme.shadows.sm,
         );
       } else {
         document.documentElement.style.setProperty(
           "--header-bg",
-          "transparent"
+          "transparent",
         );
         document.documentElement.style.setProperty("--header-backdrop", "none");
         document.documentElement.style.setProperty("--header-shadow", "none");
@@ -158,6 +183,14 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (clickTimer) {
+        clearTimeout(clickTimer);
+      }
+    };
+  }, [clickTimer]);
 
   const navItems = [
     { href: "/", label: "홈" },
@@ -175,7 +208,7 @@ export default function Header() {
       transition={{ duration: 0.5 }}
     >
       <Nav>
-        <LogoWrapper onClick={() => router.push("/")}>
+        <LogoWrapper onClick={handleLogoClick}>
           <Image
             src="/EzySaladLogo.png"
             alt="이지샐러드 - 신선한 샐러드 배달 서비스"
