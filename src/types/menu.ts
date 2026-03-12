@@ -16,3 +16,9 @@ export interface MenuCategory {
   name: string;
   items: MenuItem[];
 }
+
+export interface CartItem extends MenuItem {
+  quantity: number;
+  selectedSize?: "Full" | "Half";
+  selectedPrice: number;
+}
