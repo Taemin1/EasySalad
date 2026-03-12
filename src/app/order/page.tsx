@@ -6,15 +6,9 @@ import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "@/styles/theme";
 import { getMenuByCategories } from "@/lib/menu";
-import { MenuItem, MenuCategory } from "@/types/menu";
+import { type MenuItem, type MenuCategory, type CartItem } from "@/types/menu";
 import Image from "next/image";
 import isPropValid from "@emotion/is-prop-valid";
-
-interface CartItem extends MenuItem {
-  quantity: number;
-  selectedSize?: "Full" | "Half";
-  selectedPrice: number;
-}
 
 const Container = styled.div`
   min-height: 100vh;

@@ -7,18 +7,7 @@ import { motion } from "framer-motion";
 import { theme } from "@/styles/theme";
 import PortOne, { Currency } from "@portone/browser-sdk/v2";
 import isPropValid from "@emotion/is-prop-valid";
-
-// 기존 인터페이스
-interface CartItem {
-  id: string;
-  name: string;
-  price?: number;
-  quantity: number;
-  image?: string;
-  category: string;
-  selectedSize?: "Full" | "Half";
-  selectedPrice: number;
-}
+import { CartItem } from "@/types/menu";
 
 interface DeliveryInfo {
   name: string;
