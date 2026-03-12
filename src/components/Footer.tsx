@@ -58,7 +58,7 @@ const Copyright = styled.div`
     display: none;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: ${theme.breakpoints.mobile}) {
     .mobile-br {
       display: inline;
     }

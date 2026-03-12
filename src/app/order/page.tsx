@@ -16,7 +16,7 @@ const Container = styled.div`
   max-width: 1400px;
   margin: 0 auto;
 
-  @media (max-width: 400px) {
+  @media (max-width: ${theme.breakpoints.mobile}) {
     padding: 100px 15px 120px;
   }
 `;
@@ -34,7 +34,7 @@ const Title = styled(motion.h1)`
   -webkit-text-fill-color: transparent;
   background-clip: text;
 
-  @media (max-width: 768px) {
+  @media (max-width: ${theme.breakpoints.tablet}) {
     font-size: 2rem;
     margin-bottom: 30px;
   }
@@ -45,8 +45,8 @@ const ContentWrapper = styled.div`
   grid-template-columns: 1fr 400px;
   gap: 40px;
   align-items: start;
-  @media (max-width: 400px) {
-    display: block;
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -88,7 +88,7 @@ const MenuGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 30px;
 
-  @media (max-width: 400px) {
+  @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
     gap: 20px;
   }
@@ -227,7 +227,7 @@ const CartSection = styled(motion.div, {
   padding: 30px;
   box-shadow: ${theme.shadows.md};
 
-  @media (max-width: 400px) {
+  @media (max-width: ${theme.breakpoints.mobile}) {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -245,7 +245,7 @@ const CartSection = styled(motion.div, {
 const MobileCartHandle = styled.div`
   display: none;
 
-  @media (max-width: 400px) {
+  @media (max-width: ${theme.breakpoints.mobile}) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -269,7 +269,7 @@ const CartTitle = styled.h2`
   margin-bottom: 25px;
   color: ${theme.colors.text.primary};
 
-  @media (max-width: 400px) {
+  @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 1.2rem;
     margin-bottom: 15px;
     text-align: center;
@@ -281,7 +281,7 @@ const CartItems = styled.div`
   overflow-y: auto;
   margin-bottom: 20px;
 
-  @media (max-width: 400px) {
+  @media (max-width: ${theme.breakpoints.mobile}) {
     max-height: 100px;
     margin-bottom: 15px;
   }
