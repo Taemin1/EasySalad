@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import Hero from "@/components/Hero";
 import CategorySection from "@/components/CategorySection";
-import { getMenuByCategories } from "@/lib/menu";
 import { MenuCategory } from "@/types/menu";
 import { theme } from "@/styles/theme";
 import Image from "next/image";
@@ -90,25 +88,11 @@ const SectionTitle = styled(motion.h2)`
   }
 `;
 
-export default function HomeContent() {
-  const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchMenuData = async () => {
-      try {
-        const categories = await getMenuByCategories();
-        setMenuCategories(categories);
-      } catch (error) {
-        console.error("Error fetching menu data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMenuData();
-  }, []);
-
+export default function HomeContent({
+  menuCategories,
+}: {
+  menuCategories: MenuCategory[];
+}) {
   const features = [
     {
       image: (
@@ -204,15 +188,9 @@ export default function HomeContent() {
           인기 메뉴
         </SectionTitle>
 
-        {loading ? (
-          <div style={{ textAlign: "center", padding: "60px 0" }}>
-            메뉴를 불러오는 중...
-          </div>
-        ) : (
-          featuredCategories.map((category) => (
-            <CategorySection key={category.id} category={category} />
-          ))
-        )}
+        {featuredCategories.map((category) => (
+          <CategorySection key={category.id} category={category} />
+        ))}
       </MenuPreview>
     </Container>
   );
