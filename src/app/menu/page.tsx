@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import MenuContent from "./MenuContent";
+import { getMenuByCategories } from "@/lib/menu";
 
 export const metadata: Metadata = {
   title: "메뉴 | 이지샐러드 - 다양한 샐러드와 샌드위치 메뉴",
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function MenuPage() {
-  return <MenuContent />;
+export default async function MenuPage() {
+  const menuCategories = await getMenuByCategories();
+  return <MenuContent menuCategories={menuCategories} />;
 }

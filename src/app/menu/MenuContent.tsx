@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
-import { getMenuByCategories } from "@/lib/menu";
 import { MenuCategory } from "@/types/menu";
 import MenuCard from "@/components/MenuCard";
 import { theme } from "@/styles/theme";
@@ -72,25 +71,12 @@ const NoItemsMessage = styled.p`
   grid-column: 1 / -1;
 `;
 
-export default function MenuContent() {
+export default function MenuContent({
+  menuCategories,
+}: {
+  menuCategories: MenuCategory[];
+}) {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchMenuData = async () => {
-      try {
-        const categories = await getMenuByCategories();
-        setMenuCategories(categories);
-      } catch (error) {
-        console.error("Error fetching menu data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMenuData();
-  }, []);
 
   const filteredItems =
     selectedCategory === "all"
@@ -107,8 +93,7 @@ export default function MenuContent() {
         전체 메뉴
       </PageTitle>
 
-      {!loading && (
-        <CategoryTabs>
+      <CategoryTabs>
           <CategoryTab
             active={selectedCategory === "all"}
             onClick={() => setSelectedCategory("all")}
@@ -130,7 +115,6 @@ export default function MenuContent() {
             </CategoryTab>
           ))}
         </CategoryTabs>
-      )}
 
       <AnimatePresence mode="wait">
         <MenuGrid
@@ -140,9 +124,7 @@ export default function MenuContent() {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
         >
-          {loading ? (
-            <NoItemsMessage>메뉴를 불러오는 중...</NoItemsMessage>
-          ) : filteredItems.length > 0 ? (
+          {filteredItems.length > 0 ? (
             filteredItems.map((item, index) => (
               <MenuCard key={item.id} item={item} index={index} />
             ))

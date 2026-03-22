@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import HomeContent from "./HomeContent";
+import { getMenuByCategories } from "@/lib/menu";
 
 export const metadata: Metadata = {
   title: "이지샐러드 - 신선한 샐러드 배달 서비스 | 건강한 도시락",
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
-  return <HomeContent />;
+export default async function Home() {
+  const menuCategories = await getMenuByCategories();
+  return <HomeContent menuCategories={menuCategories} />;
 }
