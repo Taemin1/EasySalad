@@ -2,7 +2,7 @@
 
 **신선한 샐러드와 샌드위치를 위한 프리미엄 배달 서비스**
 
-**URL** : [https://ezysalad.site](https://ezysalad.site)
+**URL** : [https://ezysalad.store](https://ezysalad.store)
 
 ---
 
