@@ -115,9 +115,8 @@ export async function POST(request: NextRequest) {
             </p>
             
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-              <p style="color: #6b7280; font-size: 14px; margin: 5px 0;">📞 02-1234-5678</p>
-              <p style="color: #6b7280; font-size: 14px; margin: 5px 0;">📧 info@easysalad.com</p>
-              <p style="color: #6b7280; font-size: 14px; margin: 5px 0;">⏰ 월-금: 06:30 - 20:30</p>
+              <p style="color: #6b7280; font-size: 14px; margin: 5px 0;">📞 02-6031-8927</p>
+              <p style="color: #6b7280; font-size: 14px; margin: 5px 0;">⏰ 월-금: 08:30 - 20:30</p>
             </div>
           </div>
         </div>
