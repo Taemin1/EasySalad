@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/../lib/supabase/server";
 
 export async function GET() {
@@ -65,6 +66,11 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    // 메뉴를 보여주는 정적 페이지 재생성
+    revalidatePath("/");
+    revalidatePath("/menu");
+    revalidatePath("/order");
 
     return NextResponse.json({ data }, { status: 201 });
   } catch (error) {
