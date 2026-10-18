@@ -547,6 +547,8 @@ export default function AdminDashboard() {
 
       if (response.ok) {
         await loadMenus();
+        // 브라우저에 캐시된 메뉴/주문 페이지를 비워 다음 이동 시 최신 데이터를 받도록 함
+        router.refresh();
       } else {
         const result = await response.json();
         alert(`삭제 실패: ${result.error}`);
@@ -653,6 +655,8 @@ export default function AdminDashboard() {
       if (response.ok) {
         setShowModal(false);
         await loadMenus();
+        // 브라우저에 캐시된 메뉴/주문 페이지를 비워 다음 이동 시 최신 데이터를 받도록 함
+        router.refresh();
         alert(
           editingMenu ? "메뉴가 수정되었습니다." : "메뉴가 추가되었습니다.",
         );
