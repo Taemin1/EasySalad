@@ -6,7 +6,6 @@ import Image from "next/image";
 import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "@/styles/theme";
-import { useRouter } from "next/navigation";
 
 const HeaderContainer = styled(motion.header)`
   position: fixed;
@@ -124,32 +123,6 @@ const MobileNavLink = styled(Link)`
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [clickCount, setClickCount] = useState(0);
-  const [clickTimer, setClickTimer] = useState<NodeJS.Timeout | null>(null);
-  const router = useRouter();
-
-  const handleLogoClick = () => {
-    const newCount = clickCount + 1;
-    setClickCount(newCount);
-
-    if (clickTimer) {
-      clearTimeout(clickTimer);
-    }
-
-    if (newCount === 3) {
-      window.open("/university/login", "_blank");
-      setClickCount(0);
-      setClickTimer(null);
-    } else {
-      const timer = setTimeout(() => {
-        if (newCount < 3) {
-          router.push("/");
-        }
-        setClickCount(0);
-      }, 500);
-      setClickTimer(timer);
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -184,21 +157,12 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    return () => {
-      if (clickTimer) {
-        clearTimeout(clickTimer);
-      }
-    };
-  }, [clickTimer]);
-
   const navItems = [
     { href: "/", label: "홈" },
     { href: "/menu", label: "메뉴" },
     { href: "/about", label: "소개" },
     { href: "/contact", label: "문의" },
     { href: "/order", label: "주문" },
-    { href: "/catering", label: "회사 스낵" },
   ];
 
   return (
@@ -208,14 +172,16 @@ export default function Header() {
       transition={{ duration: 0.5 }}
     >
       <Nav>
-        <LogoWrapper onClick={handleLogoClick}>
-          <Image
-            src="/EzySaladLogo.png"
-            alt="이지샐러드 - 신선한 샐러드 배달 서비스"
-            width={150}
-            height={50}
-            priority
-          />
+        <LogoWrapper>
+          <Link href="/">
+            <Image
+              src="/EzySaladLogo.png"
+              alt="이지샐러드 - 신선한 샐러드 배달 서비스"
+              width={150}
+              height={50}
+              priority
+            />
+          </Link>
         </LogoWrapper>
 
         <NavLinks>
