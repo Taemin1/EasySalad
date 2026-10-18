@@ -474,6 +474,41 @@ export default function AdminDashboard() {
     }
   };
 
+  // 로그인 여부는 proxy에서 확인하고, 여기서는 사용자 정보 표시와 관리자 계정 확인 후 메뉴를 불러옴
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+          error,
+        } = await supabase.auth.getUser();
+
+        if (error || !user) {
+          router.push("/thisisforadmin/login");
+          return;
+        }
+
+        if (user.email !== process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
+          await supabase.auth.signOut();
+          router.push("/thisisforadmin/login");
+          return;
+        }
+
+        setUser(user);
+        loadMenus();
+      } catch (error) {
+        console.error("Auth error:", error);
+        router.push("/thisisforadmin/login");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleAddMenu = () => {
     setEditingMenu(null);
     setFormData({
