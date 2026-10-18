@@ -298,13 +298,6 @@ const Input = styled.input`
     outline: none;
     border-color: ${theme.colors.primary};
   }
-
-  /* 숫자 입력 화살표 제거 */
-  &[type="number"]::-webkit-outer-spin-button,
-  &[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
 `;
 
 const Textarea = styled.textarea`
@@ -431,14 +424,17 @@ export default function AdminDashboard() {
 
   const handlePriceChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData((prev) => ({ ...prev, price: e.target.value }));
+      // 숫자 외 문자 제거 (type="number"는 휠 스크롤로 값이 바뀌어 text로 사용)
+      const price = e.target.value.replace(/\D/g, "");
+      setFormData((prev) => ({ ...prev, price }));
     },
     [],
   );
 
   const handleHalfPriceChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData((prev) => ({ ...prev, half_price: e.target.value }));
+      const half_price = e.target.value.replace(/\D/g, "");
+      setFormData((prev) => ({ ...prev, half_price }));
     },
     [],
   );
@@ -473,6 +469,41 @@ export default function AdminDashboard() {
       setMenusLoading(false);
     }
   };
+
+  // 로그인 여부는 proxy에서 확인하고, 여기서는 사용자 정보 표시와 관리자 계정 확인 후 메뉴를 불러옴
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+          error,
+        } = await supabase.auth.getUser();
+
+        if (error || !user) {
+          router.push("/thisisforadmin/login");
+          return;
+        }
+
+        if (user.email !== process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
+          await supabase.auth.signOut();
+          router.push("/thisisforadmin/login");
+          return;
+        }
+
+        setUser(user);
+        loadMenus();
+      } catch (error) {
+        console.error("Auth error:", error);
+        router.push("/thisisforadmin/login");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleAddMenu = () => {
     setEditingMenu(null);
@@ -794,7 +825,8 @@ export default function AdminDashboard() {
                   <Label htmlFor="price">가격 *</Label>
                   <Input
                     id="price"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.price}
                     onChange={handlePriceChange}
                     placeholder="원"
@@ -806,7 +838,8 @@ export default function AdminDashboard() {
                   <Label htmlFor="half_price">하프 가격</Label>
                   <Input
                     id="half_price"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.half_price}
                     onChange={handleHalfPriceChange}
                     placeholder="원 (선택사항)"
