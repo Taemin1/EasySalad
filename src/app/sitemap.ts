@@ -17,10 +17,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     {
-      url: `${baseUrl}/catering`,
-      priority: 0.1,
-    },
-    {
       url: `${baseUrl}/contact`,
       priority: 0.5,
     },

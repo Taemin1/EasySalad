@@ -37,16 +37,6 @@ export async function proxy(request: NextRequest) {
   console.log("🔒 Proxy 실행:", request.nextUrl.pathname);
   console.log("👤 사용자:", user ? user.email : "없음");
 
-  // 보호할 경로들
-  const protectedPaths = [
-    "/university/duksung",
-    "/thisisforadmin",
-    "/api/admin",
-  ];
-  const isProtectedPath = protectedPaths.some((path) =>
-    request.nextUrl.pathname.startsWith(path),
-  );
-
   // 로그인 페이지는 제외
   const isLoginPage = request.nextUrl.pathname === "/thisisforadmin/login";
   if (isLoginPage) {
@@ -54,20 +44,9 @@ export async function proxy(request: NextRequest) {
     return supabaseResponse;
   }
 
-  console.log("🛡️ 보호된 경로:", isProtectedPath);
-
-  // 보호된 경로인데 사용자가 없으면 로그인 페이지로 리다이렉트
-  if (isProtectedPath && !user) {
-    // Admin 경로는 admin 로그인으로
-    if (
-      request.nextUrl.pathname.startsWith("/thisisforadmin") ||
-      request.nextUrl.pathname.startsWith("/api/admin")
-    ) {
-      const redirectUrl = new URL("/thisisforadmin/login", request.url);
-      return NextResponse.redirect(redirectUrl);
-    }
-    // University 경로는 university 로그인으로
-    const redirectUrl = new URL("/university/login", request.url);
+  // 사용자가 없으면 관리자 로그인 페이지로 리다이렉트 (matcher 경로는 모두 보호 대상)
+  if (!user) {
+    const redirectUrl = new URL("/thisisforadmin/login", request.url);
     return NextResponse.redirect(redirectUrl);
   }
 
@@ -77,7 +56,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/university/duksung/:path*",
     "/thisisforadmin/:path*",
     "/api/admin/:path*",
   ],
