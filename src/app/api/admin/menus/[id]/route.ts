@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/../lib/supabase/server";
 
 export async function PUT(
@@ -74,6 +75,11 @@ export async function PUT(
       );
     }
 
+    // 메뉴를 보여주는 정적 페이지 재생성
+    revalidatePath("/");
+    revalidatePath("/menu");
+    revalidatePath("/order");
+
     // 단일 결과 반환
     const updatedMenu = Array.isArray(data) ? data[0] : data;
     return NextResponse.json({ data: updatedMenu });
@@ -102,6 +108,10 @@ export async function DELETE(
         { status: 500 }
       );
     }
+
+    revalidatePath("/");
+    revalidatePath("/menu");
+    revalidatePath("/order");
 
     return NextResponse.json({ message: "메뉴가 성공적으로 삭제되었습니다." });
   } catch (error) {
